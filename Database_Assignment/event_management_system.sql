@@ -167,5 +167,5 @@ FROM Users U
 LEFT JOIN Registrations R ON U.user_id = R.user_id
 GROUP BY U.name
 ORDER BY total_attended_events DESC, average_rating_attended DESC NULLS LAST;
-
+-- END OF THE ASSIHNMENT CODE
 -- END OF ASSIGNMENT CODE
