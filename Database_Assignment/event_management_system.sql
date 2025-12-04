@@ -168,3 +168,23 @@ LEFT JOIN Registrations R ON U.user_id = R.user_id
 GROUP BY U.name
 ORDER BY total_attended_events DESC, average_rating_attended DESC NULLS LAST;
 -- END OF ASSIGNMENT CODE
+
+-- Extra things 
+
+-- 1: Add Indexes for Faster Queries
+
+-- Index for quickly finding registrations by user
+CREATE INDEX idx_registrations_user
+ON Registrations(user_id);
+
+-- Index for quickly finding registrations by event
+CREATE INDEX idx_registrations_event
+ON Registrations(event_id);
+
+-- Index on city for user demographic queries
+CREATE INDEX idx_users_city
+ON Users(city);
+
+-- Index on category for event filtering
+CREATE INDEX idx_events_category
+ON Events(category);
