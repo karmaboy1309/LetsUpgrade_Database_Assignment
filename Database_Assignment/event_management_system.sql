@@ -216,3 +216,20 @@ UPDATE Events SET organizer_id = 1 WHERE event_id IN (201, 204);
 UPDATE Events SET organizer_id = 2 WHERE event_id IN (202);
 UPDATE Events SET organizer_id = 3 WHERE event_id IN (205);
 UPDATE Events SET organizer_id = 1 WHERE event_id IN (203);
+
+
+-- Function: Get average rating of any event by event_id
+CREATE FUNCTION GetEventAverageRating(e_id INT)
+RETURNS DECIMAL(5,2)
+DETERMINISTIC
+BEGIN
+    DECLARE avg_rating DECIMAL(5,2);
+
+    SELECT ROUND(AVG(feedback_rating),2)
+    INTO avg_rating
+    FROM Registrations
+    WHERE event_id = e_id 
+      AND feedback_rating IS NOT NULL;
+
+    RETURN avg_rating;
+END;
