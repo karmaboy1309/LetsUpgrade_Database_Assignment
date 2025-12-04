@@ -233,3 +233,15 @@ BEGIN
 
     RETURN avg_rating;
 END;
+
+
+-- Stored Procedure to get event summary
+CREATE PROCEDURE GetEventSummary(IN e_id INT)
+BEGIN
+    SELECT 
+        E.event_name,
+        E.category,
+        E.ticket_price,
+        (SELECT COUNT(*) FROM Registrations WHERE event_id = e_id) AS total_registrations,
+        GetEventAverageRating(e_id) AS average_rating;
+END;
