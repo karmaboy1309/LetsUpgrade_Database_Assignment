@@ -245,3 +245,34 @@ BEGIN
         (SELECT COUNT(*) FROM Registrations WHERE event_id = e_id) AS total_registrations,
         GetEventAverageRating(e_id) AS average_rating;
 END;
+
+
+-- Trigger to enforce valid feedback ratings
+CREATE TRIGGER ValidateRatingBeforeInsert
+BEFORE INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    IF NEW.feedback_rating NOT BETWEEN 1 AND 10 THEN
+        SET NEW.feedback_rating = NULL;
+    END IF;
+END;
+
+CREATE VIEW EventRevenueView AS
+SELECT
+    E.event_id,
+    E.event_name,
+    COUNT(R.registration_id) AS total_tickets_sold,
+    (COUNT(R.registration_id) * E.ticket_price) AS total_revenue
+FROM Events E
+LEFT JOIN Registrations R ON E.event_id = R.event_id
+GROUP BY E.event_id, E.event_name, E.ticket_price;
+
+CREATE VIEW UserAttendanceView AS
+SELECT
+    U.user_id,
+    U.name,
+    COUNT(CASE WHEN R.attended = TRUE THEN 1 END) AS total_attended,
+    ROUND(AVG(R.feedback_rating), 2) AS avg_rating
+FROM Users U
+LEFT JOIN Registrations R ON U.user_id = R.user_id
+GROUP BY U.user_id, U.name;
