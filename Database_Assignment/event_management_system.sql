@@ -188,3 +188,31 @@ ON Users(city);
 -- Index on category for event filtering
 CREATE INDEX idx_events_category
 ON Events(category);
+
+--2 : Organizers table for event ownership
+
+CREATE TABLE Organizers (
+    organizer_id INT PRIMARY KEY,
+    organizer_name VARCHAR(150) NOT NULL,
+    email VARCHAR(150) UNIQUE NOT NULL
+);
+
+-- Update Events to connect with Organizer
+ALTER TABLE Events
+ADD COLUMN organizer_id INT;
+
+ALTER TABLE Events
+ADD FOREIGN KEY (organizer_id) 
+REFERENCES Organizers(organizer_id);
+
+-- Sample Organizers
+INSERT INTO Organizers (organizer_id, organizer_name, email) VALUES
+(1, 'Global Tech Inc', 'contact@globaltech.com'),
+(2, 'SoundWave Media', 'info@soundwave.com'),
+(3, 'City Sports Club', 'events@citysports.com');
+
+-- Update events to assign organizers
+UPDATE Events SET organizer_id = 1 WHERE event_id IN (201, 204);
+UPDATE Events SET organizer_id = 2 WHERE event_id IN (202);
+UPDATE Events SET organizer_id = 3 WHERE event_id IN (205);
+UPDATE Events SET organizer_id = 1 WHERE event_id IN (203);
