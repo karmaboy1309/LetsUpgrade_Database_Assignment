@@ -322,3 +322,34 @@ BEGIN
         WHERE event_id = NEW.event_id;
     END IF;
 END;
+
+
+-- Refund table
+CREATE TABLE Refunds (
+    refund_id BIGINT PRIMARY KEY,
+    registration_id INT,
+    user_id INT,
+    event_id INT,
+    refund_amount DECIMAL(10,2),
+    refund_date DATE,
+    FOREIGN KEY (registration_id) REFERENCES Registrations(registration_id)
+);
+
+-- Soft delete column
+ALTER TABLE Events
+ADD COLUMN is_cancelled BOOLEAN DEFAULT FALSE;
+
+-- Trigger: When event cancelled → auto refund users
+CREATE TRIGGER AutoRefundOnCancellation
+AFTER UPDATE ON Events
+FOR EACH ROW
+BEGIN
+    IF NEW.is_cancelled = TRUE AND OLD.is_cancelled = FALSE THEN
+        INSERT INTO Refunds (refund_id, registration_id, user_id, event_id, refund_amount, refund_date)
+        SELECT UUID_SHORT(), R.registration_id, R.user_id, R.event_id, E.ticket_price, CURDATE()
+        FROM Registrations R
+        JOIN Events E ON R.event_id = E.event_id
+        WHERE R.event_id = NEW.event_id;
+    END IF;
+END;
+
