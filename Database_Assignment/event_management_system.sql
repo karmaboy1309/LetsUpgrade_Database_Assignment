@@ -276,3 +276,49 @@ SELECT
 FROM Users U
 LEFT JOIN Registrations R ON U.user_id = R.user_id
 GROUP BY U.user_id, U.name;
+
+
+
+/******************************************************
+    COMMIT 5: EVENT CAPACITY + WAITING LIST SYSTEM
+******************************************************/
+
+-- Add capacity and seats counter
+ALTER TABLE Events
+ADD COLUMN max_capacity INT DEFAULT 100,
+ADD COLUMN seats_filled INT DEFAULT 0;
+
+-- Waiting list table
+CREATE TABLE WaitingList (
+    wait_id BIGINT PRIMARY KEY,
+    user_id INT NOT NULL,
+    event_id INT NOT NULL,
+    request_date DATE NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
+
+-- Trigger: If event is full → move to waiting list
+CREATE TRIGGER ManageEventCapacity
+BEFORE INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    DECLARE maxCap INT;
+    DECLARE filled INT;
+
+    SELECT max_capacity, seats_filled INTO maxCap, filled
+    FROM Events
+    WHERE event_id = NEW.event_id;
+
+    IF filled >= maxCap THEN
+        INSERT INTO WaitingList (wait_id, user_id, event_id, request_date)
+        VALUES (UUID_SHORT(), NEW.user_id, NEW.event_id, CURDATE());
+
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Event is full. User added to waiting list.';
+    ELSE
+        UPDATE Events
+        SET seats_filled = seats_filled + 1
+        WHERE event_id = NEW.event_id;
+    END IF;
+END;
