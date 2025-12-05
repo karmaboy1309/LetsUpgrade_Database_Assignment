@@ -353,3 +353,34 @@ BEGIN
     END IF;
 END;
 
+/******************************************************
+    COMMIT 6: USER LOYALTY POINTS + RECOMMENDATION SYSTEM
+******************************************************/
+
+-- Add points column
+ALTER TABLE Users
+ADD COLUMN points INT DEFAULT 0;
+
+-- Trigger: add points if attendance changes to TRUE
+CREATE TRIGGER AddPointsOnAttendance
+AFTER UPDATE ON Registrations
+FOR EACH ROW
+BEGIN
+    IF NEW.attended = TRUE AND OLD.attended = FALSE THEN
+        UPDATE Users
+        SET points = points + 10
+        WHERE user_id = NEW.user_id;
+    END IF;
+END;
+
+-- View: Recommend similar events based on past category
+CREATE VIEW RecommendedEvents AS
+SELECT DISTINCT
+    U.user_id,
+    E2.event_name AS recommended_event,
+    E2.category
+FROM Users U
+JOIN Registrations R ON U.user_id = R.user_id
+JOIN Events E1 ON R.event_id = E1.event_id
+JOIN Events E2 ON E1.category = E2.category
+WHERE E2.event_id != E1.event_id;
