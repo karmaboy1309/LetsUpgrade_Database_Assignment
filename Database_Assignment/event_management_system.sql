@@ -384,3 +384,37 @@ JOIN Registrations R ON U.user_id = R.user_id
 JOIN Events E1 ON R.event_id = E1.event_id
 JOIN Events E2 ON E1.category = E2.category
 WHERE E2.event_id != E1.event_id;
+
+
+/******************************************************
+    COMMIT 7: ADMIN ACTIVITY LOGS (AUDIT SYSTEM)
+******************************************************/
+
+CREATE TABLE AdminLogs (
+    log_id BIGINT PRIMARY KEY,
+    admin_id INT NOT NULL,
+    action_type VARCHAR(50) NOT NULL,
+    description TEXT,
+    timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (admin_id) REFERENCES Users(user_id)
+);
+
+-- Trigger: Log event creation
+CREATE TRIGGER LogEventCreate
+AFTER INSERT ON Events
+FOR EACH ROW
+BEGIN
+    INSERT INTO AdminLogs (log_id, admin_id, action_type, description)
+    VALUES (UUID_SHORT(), NEW.created_by, 'CREATE_EVENT',
+            CONCAT('Event created: ', NEW.event_name));
+END;
+
+-- Trigger: Log event update
+CREATE TRIGGER LogEventUpdate
+AFTER UPDATE ON Events
+FOR EACH ROW
+BEGIN
+    INSERT INTO AdminLogs (log_id, admin_id, action_type, description)
+    VALUES (UUID_SHORT(), NEW.created_by, 'UPDATE_EVENT',
+            CONCAT('Event updated: ', NEW.event_name));
+END;
