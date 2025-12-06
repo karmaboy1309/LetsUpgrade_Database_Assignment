@@ -463,3 +463,21 @@ BEGIN
         SET NEW.final_amount = price;
     END IF;
 END;
+
+
+/******************************************************
+    COMMIT 9: EVENT TAGGING SYSTEM (MANY-TO-MANY)
+******************************************************/
+
+CREATE TABLE Tags (
+    tag_id INT AUTO_INCREMENT PRIMARY KEY,
+    tag_name VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE EventTags (
+    event_id INT NOT NULL,
+    tag_id INT NOT NULL,
+    PRIMARY KEY (event_id, tag_id),
+    FOREIGN KEY (event_id) REFERENCES Events(event_id),
+    FOREIGN KEY (tag_id) REFERENCES Tags(tag_id)
+);
