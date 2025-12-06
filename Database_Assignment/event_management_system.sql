@@ -498,3 +498,28 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+
+/******************************************************
+    COMMIT 11: NOTIFICATION QUEUE SYSTEM
+******************************************************/
+
+CREATE TABLE NotificationQueue (
+    notif_id BIGINT PRIMARY KEY,
+    user_id INT NOT NULL,
+    message TEXT NOT NULL,
+    status ENUM('pending', 'sent') DEFAULT 'pending',
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+-- Trigger: Add notification on registration
+CREATE TRIGGER NotifyRegistration
+AFTER INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    INSERT INTO NotificationQueue (notif_id, user_id, message)
+    VALUES (UUID_SHORT(), NEW.user_id,
+            CONCAT('Registration successful for event ID: ', NEW.event_id));
+END;
