@@ -481,3 +481,20 @@ CREATE TABLE EventTags (
     FOREIGN KEY (event_id) REFERENCES Events(event_id),
     FOREIGN KEY (tag_id) REFERENCES Tags(tag_id)
 );
+
+
+/******************************************************
+    COMMIT 10: MONTHLY REPORT STORED PROCEDURE
+******************************************************/
+
+DELIMITER $$
+
+CREATE PROCEDURE GenerateMonthlyReport(IN month_no INT, IN year_no INT)
+BEGIN
+    SELECT 
+        (SELECT COUNT(*) FROM Users WHERE MONTH(created_at)=month_no AND YEAR(created_at)=year_no) AS new_users,
+        (SELECT COUNT(*) FROM Registrations WHERE MONTH(registration_date)=month_no AND YEAR(registration_date)=year_no) AS total_registrations,
+        (SELECT SUM(final_amount) FROM Registrations WHERE MONTH(registration_date)=month_no AND YEAR(registration_date)=year_no) AS monthly_revenue;
+END $$
+
+DELIMITER ;
