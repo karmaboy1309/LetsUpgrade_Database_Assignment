@@ -418,3 +418,48 @@ BEGIN
     VALUES (UUID_SHORT(), NEW.created_by, 'UPDATE_EVENT',
             CONCAT('Event updated: ', NEW.event_name));
 END;
+
+
+/******************************************************
+    COMMIT 8: COUPON AND DISCOUNT SYSTEM
+******************************************************/
+
+CREATE TABLE Coupons (
+    coupon_id VARCHAR(20) PRIMARY KEY,
+    discount_percent INT NOT NULL,
+    expiry_date DATE NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+ALTER TABLE Registrations
+ADD COLUMN coupon_used VARCHAR(20),
+ADD COLUMN final_amount DECIMAL(10,2);
+
+-- Trigger: Apply discount on registration
+CREATE TRIGGER ApplyCouponDiscount
+BEFORE INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    DECLARE disc INT DEFAULT 0;
+    DECLARE price DECIMAL(10,2);
+
+    IF NEW.coupon_used IS NOT NULL THEN
+        SELECT discount_percent INTO disc
+        FROM Coupons
+        WHERE coupon_id = NEW.coupon_used
+        AND is_active = TRUE
+        AND expiry_date >= CURDATE();
+
+        SELECT ticket_price INTO price
+        FROM Events
+        WHERE event_id = NEW.event_id;
+
+        SET NEW.final_amount = price - (price * disc / 100);
+    ELSE
+        SELECT ticket_price INTO price
+        FROM Events
+        WHERE event_id = NEW.event_id;
+
+        SET NEW.final_amount = price;
+    END IF;
+END;
