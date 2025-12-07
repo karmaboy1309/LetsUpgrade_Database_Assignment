@@ -556,3 +556,30 @@ BEGIN
     SET attended = TRUE
     WHERE user_id = NEW.user_id AND event_id = NEW.event_id;
 END;
+
+
+/******************************************************
+     13: EVENT RATING & REVIEW MODERATION
+******************************************************/
+
+CREATE TABLE EventReviews (
+    review_id BIGINT PRIMARY KEY,
+    user_id INT,
+    event_id INT,
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    review_text TEXT,
+    is_blocked BOOLEAN DEFAULT FALSE,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
+
+-- Trigger: block bad words
+CREATE TRIGGER BlockBadReview
+BEFORE INSERT ON EventReviews
+FOR EACH ROW
+BEGIN
+    IF NEW.review_text REGEXP 'shit|fuck|bitch|abuse|idiot' THEN
+        SET NEW.is_blocked = TRUE;
+    END IF;
+END;
