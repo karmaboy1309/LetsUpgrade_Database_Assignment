@@ -614,3 +614,25 @@ FROM Events E
 LEFT JOIN Registrations R ON E.event_id = R.event_id
 GROUP BY E.event_id, E.event_name
 ORDER BY attendance_percentage DESC;
+
+
+/******************************************************
+     16: BACKUP AND RESTORE SYSTEM
+******************************************************/
+
+CREATE TABLE DeletedEventsBackup (
+    backup_id BIGINT PRIMARY KEY,
+    event_id INT,
+    event_name VARCHAR(100),
+    deleted_at DATETIME,
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
+
+-- Trigger: backup on delete
+CREATE TRIGGER BackupDeletedEvent
+BEFORE DELETE ON Events
+FOR EACH ROW
+BEGIN
+    INSERT INTO DeletedEventsBackup (backup_id, event_id, event_name, deleted_at)
+    VALUES (UUID_SHORT(), OLD.event_id, OLD.event_name, NOW());
+END;
