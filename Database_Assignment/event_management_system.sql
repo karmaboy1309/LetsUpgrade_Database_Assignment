@@ -280,7 +280,7 @@ GROUP BY U.user_id, U.name;
 
 
 /******************************************************
-    COMMIT 5: EVENT CAPACITY + WAITING LIST SYSTEM
+     5: EVENT CAPACITY + WAITING LIST SYSTEM
 ******************************************************/
 
 -- Add capacity and seats counter
@@ -354,7 +354,7 @@ BEGIN
 END;
 
 /******************************************************
-    COMMIT 6: USER LOYALTY POINTS + RECOMMENDATION SYSTEM
+   6: USER LOYALTY POINTS + RECOMMENDATION SYSTEM
 ******************************************************/
 
 -- Add points column
@@ -387,7 +387,7 @@ WHERE E2.event_id != E1.event_id;
 
 
 /******************************************************
-    COMMIT 7: ADMIN ACTIVITY LOGS (AUDIT SYSTEM)
+     7: ADMIN ACTIVITY LOGS (AUDIT SYSTEM)
 ******************************************************/
 
 CREATE TABLE AdminLogs (
@@ -421,7 +421,7 @@ END;
 
 
 /******************************************************
-    COMMIT 8: COUPON AND DISCOUNT SYSTEM
+     8: COUPON AND DISCOUNT SYSTEM
 ******************************************************/
 
 CREATE TABLE Coupons (
@@ -466,7 +466,7 @@ END;
 
 
 /******************************************************
-    COMMIT 9: EVENT TAGGING SYSTEM (MANY-TO-MANY)
+     9: EVENT TAGGING SYSTEM (MANY-TO-MANY)
 ******************************************************/
 
 CREATE TABLE Tags (
@@ -484,7 +484,7 @@ CREATE TABLE EventTags (
 
 
 /******************************************************
-    COMMIT 10: MONTHLY REPORT STORED PROCEDURE
+     10: MONTHLY REPORT STORED PROCEDURE
 ******************************************************/
 
 DELIMITER $$
@@ -502,7 +502,7 @@ DELIMITER ;
 
 
 /******************************************************
-    COMMIT 11: NOTIFICATION QUEUE SYSTEM
+     11: NOTIFICATION QUEUE SYSTEM
 ******************************************************/
 
 CREATE TABLE NotificationQueue (
@@ -522,4 +522,37 @@ BEGIN
     INSERT INTO NotificationQueue (notif_id, user_id, message)
     VALUES (UUID_SHORT(), NEW.user_id,
             CONCAT('Registration successful for event ID: ', NEW.event_id));
+END;
+
+
+/******************************************************
+     12: EVENT ATTENDANCE QR SYSTEM
+******************************************************/
+
+CREATE TABLE EventQR (
+    qr_id BIGINT PRIMARY KEY,
+    event_id INT NOT NULL,
+    qr_code TEXT NOT NULL, 
+    generated_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
+
+-- QR Scan Log
+CREATE TABLE QRScanLog (
+    scan_id BIGINT PRIMARY KEY,
+    user_id INT NOT NULL,
+    event_id INT NOT NULL,
+    scanned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
+
+-- Trigger: Mark attendance when QR scanned
+CREATE TRIGGER MarkAttendanceOnQRScan
+AFTER INSERT ON QRScanLog
+FOR EACH ROW
+BEGIN
+    UPDATE Registrations
+    SET attended = TRUE
+    WHERE user_id = NEW.user_id AND event_id = NEW.event_id;
 END;
