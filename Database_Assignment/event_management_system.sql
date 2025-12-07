@@ -583,3 +583,17 @@ BEGIN
         SET NEW.is_blocked = TRUE;
     END IF;
 END;
+
+
+/******************************************************
+     14: USER LOGIN HISTORY
+******************************************************/
+
+CREATE TABLE LoginHistory (
+    login_id BIGINT PRIMARY KEY,
+    user_id INT NOT NULL,
+    login_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    ip_address VARCHAR(50),
+    device_info VARCHAR(200),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
