@@ -597,3 +597,20 @@ CREATE TABLE LoginHistory (
     device_info VARCHAR(200),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+
+
+/******************************************************
+     15: EVENT POPULARITY RANKING VIEW
+******************************************************/
+
+CREATE VIEW EventPopularity AS
+SELECT 
+    E.event_id,
+    E.event_name,
+    COUNT(R.registration_id) AS total_registrations,
+    SUM(CASE WHEN R.attended = TRUE THEN 1 ELSE 0 END) AS total_attended,
+    (SUM(CASE WHEN R.attended = TRUE THEN 1 ELSE 0 END) / COUNT(R.registration_id)) * 100 AS attendance_percentage
+FROM Events E
+LEFT JOIN Registrations R ON E.event_id = R.event_id
+GROUP BY E.event_id, E.event_name
+ORDER BY attendance_percentage DESC;
