@@ -680,3 +680,29 @@ BEGIN
         VALUES (UUID_SHORT(), NEW.user_id, NEW.event_id);
     END IF;
 END;
+
+
+/******************************************************
+      19: REFUND AND CANCELLATION ANALYTICS
+******************************************************/
+
+CREATE TABLE Refunds (
+    refund_id BIGINT PRIMARY KEY,
+    user_id INT,
+    event_id INT,
+    refund_amount DECIMAL(10,2),
+    refunded_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    reason VARCHAR(300),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
+
+CREATE VIEW RefundAnalytics AS
+SELECT 
+    E.event_name,
+    COUNT(RF.refund_id) AS total_refunds,
+    SUM(RF.refund_amount) AS total_loss
+FROM Refunds RF
+JOIN Events E ON RF.event_id = E.event_id
+GROUP BY E.event_name
+ORDER BY total_loss DESC;
