@@ -730,3 +730,30 @@ BEGIN
     INSERT INTO EventHistory (history_id, event_id, old_name, old_category, old_price)
     VALUES (UUID_SHORT(), OLD.event_id, OLD.event_name, OLD.category, OLD.ticket_price);
 END;
+
+
+/******************************************************
+      21: ORGANIZER PAYOUT SYSTEM
+******************************************************/
+
+CREATE TABLE OrganizerPayouts (
+    payout_id BIGINT PRIMARY KEY,
+    organizer_id INT,
+    event_id INT,
+    total_revenue DECIMAL(10,2),
+    commission_percentage DECIMAL(5,2) DEFAULT 10.0,
+    payout_amount DECIMAL(10,2),
+    generated_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE VIEW OrganizerPayoutView AS
+SELECT
+    O.organizer_id,
+    O.name AS organizer_name,
+    E.event_name,
+    (COUNT(R.registration_id) * E.ticket_price) AS total_revenue,
+    ((COUNT(R.registration_id) * E.ticket_price) * 0.90) AS payout_amount
+FROM Organizers O
+JOIN Events E ON O.organizer_id = E.organizer_id
+JOIN Registrations R ON E.event_id = R.event_id
+GROUP BY O.organizer_id, E.event_name;
