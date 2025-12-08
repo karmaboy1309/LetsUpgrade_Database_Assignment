@@ -706,3 +706,27 @@ FROM Refunds RF
 JOIN Events E ON RF.event_id = E.event_id
 GROUP BY E.event_name
 ORDER BY total_loss DESC;
+
+
+
+/******************************************************
+      20: EVENT VERSION HISTORY (AUDIT LOG)
+******************************************************/
+
+CREATE TABLE EventHistory (
+    history_id BIGINT PRIMARY KEY,
+    event_id INT,
+    old_name VARCHAR(255),
+    old_category VARCHAR(50),
+    old_price DECIMAL(10,2),
+    changed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
+
+CREATE TRIGGER LogEventUpdate
+BEFORE UPDATE ON Events
+FOR EACH ROW
+BEGIN
+    INSERT INTO EventHistory (history_id, event_id, old_name, old_category, old_price)
+    VALUES (UUID_SHORT(), OLD.event_id, OLD.event_name, OLD.category, OLD.ticket_price);
+END;
