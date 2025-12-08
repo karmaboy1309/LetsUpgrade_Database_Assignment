@@ -654,3 +654,29 @@ JOIN Events E ON R.event_id = E.event_id
 WHERE R.attended = TRUE
 GROUP BY U.user_id, E.category
 ORDER BY interest_score DESC;
+
+
+/******************************************************
+     18: SPAM REGISTRATION DETECTOR
+******************************************************/
+
+CREATE TABLE SpamRegistrations (
+    spam_id BIGINT PRIMARY KEY,
+    user_id INT,
+    event_id INT,
+    detected_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER DetectSpamRegistration
+BEFORE INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    IF EXISTS (
+        SELECT 1 
+        FROM Registrations 
+        WHERE user_id = NEW.user_id AND event_id = NEW.event_id
+    ) THEN
+        INSERT INTO SpamRegistrations (spam_id, user_id, event_id)
+        VALUES (UUID_SHORT(), NEW.user_id, NEW.event_id);
+    END IF;
+END;
