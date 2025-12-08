@@ -636,3 +636,21 @@ BEGIN
     INSERT INTO DeletedEventsBackup (backup_id, event_id, event_name, deleted_at)
     VALUES (UUID_SHORT(), OLD.event_id, OLD.event_name, NOW());
 END;
+
+
+/******************************************************
+    17: EVENT RECOMMENDATION ENGINE (RULE BASED)
+******************************************************/
+
+CREATE VIEW UserEventRecommendations AS
+SELECT 
+    U.user_id,
+    U.name,
+    E.category AS recommended_category,
+    COUNT(R.registration_id) AS interest_score
+FROM Users U
+JOIN Registrations R ON U.user_id = R.user_id
+JOIN Events E ON R.event_id = E.event_id
+WHERE R.attended = TRUE
+GROUP BY U.user_id, E.category
+ORDER BY interest_score DESC;
