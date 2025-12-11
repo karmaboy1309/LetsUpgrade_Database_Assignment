@@ -1,96 +1,183 @@
-# 🚀 **Event Management System – SQL Project**
+# 🚀 **Event Management System – SQL Project (Fully Upgraded)**
 
-A complete SQL-based Event Management System featuring database schema design, sample dataset, analytical queries, stored procedures, triggers, views, and performance optimizations.
+A complete **end-to-end SQL Event Management System** built using MySQL, containing:
 
-This project demonstrates **real-world database design**, **advanced SQL features**, and **clean query architecture** suitable for learning, interviews, and portfolio showcases.
+✔️ Real-world schema
+✔️ Clean data model
+✔️ Analytical dashboards
+✔️ Stored procedures, functions
+✔️ Triggers, indexes, views
+✔️ Fraud detection
+✔️ Recommendations
+✔️ Dynamic pricing
+✔️ Badges, waitlist, payout system
+✔️ Complete GitHub commit-based enhancements
+
+This project is perfect for **portfolio**, **interview preparation**, **DBMS viva**, and **SQL practice**.
 
 ---
 
 # 📌 **Table of Contents**
 
-* [Project Overview]
-* [Database Schema]
-* [Features]
-* [Tech Stack]
-* [Setup Instructions]
-* [Database Objects]
+* [Project Overview](#project-overview)
+* [Database Schema](#database-schema)
+* [Features](#features)
+* [Tech Stack](#tech-stack)
+* [Setup Instructions](#setup-instructions)
+* [Database Objects](#database-objects)
 
-  * [Tables]
-  * [Indexes]
-  * [Stored Procedures]
-  * [Functions]
-  * [Triggers]
-  * [Views]
-* [Analytical Queries]
-* [Screenshots / ER Diagram (Optional)]
-* [Author]
+  * Tables
+  * Indexes
+  * Stored Procedures
+  * Functions
+  * Triggers
+  * Views
+* [Advanced Add-On Systems](#advanced-add-on-systems)
+* [Analytical Queries](#analytical-queries)
+* [Author](#author)
 
 ---
 
 # 📖 **Project Overview**
 
-This SQL project implements a functional **Event Management System (EMS)** capable of handling:
+This SQL project implements a full-scale **Event Management System (EMS)** with:
 
-* Users
-* Events
-* Event Registrations
-* Feedback
-* Attendance
-* Revenue analytics
-* Event organizers
+* User management
+* Event handling
+* Registrations
+* Attendance tracking
+* Feedback ratings
+* Revenue insight modules
+* Organizers & payout logic
+* Predictive pricing
+* Recommendation engine
+* Security & fraud detection
 
-It includes advanced SQL additions like **indexes, triggers, views, and stored procedures** to make the system *performance-optimized* and *production-ready*.
+Every feature has been implemented using **clean SQL**, following real production database standards.
 
 ---
 
 # 🧱 **Database Schema**
 
-The project contains the following core tables:
+Core tables:
 
-* **Users** – Stores user info
-* **Events** – Event details
-* **Registrations** – Tracks participation, attendance & ratings
-* **Organizers** – Who manages each event
-
-Foreign keys ensure proper relational integrity across the system.
+| Table                 | Purpose                                    |
+| --------------------- | ------------------------------------------ |
+| **Users**             | User profile & demographics                |
+| **Events**            | Event details, pricing, category, capacity |
+| **Organizers**        | Event management and payouts               |
+| **Registrations**     | Every booking, attendance, rating          |
+| **Refunds**           | Event refunds                              |
+| **Waitlist**          | Auto waitlist for full events              |
+| **UserBadges**        | Achievement tracking                       |
+| **FraudFlags**        | Fraud detection logs                       |
+| **SpamRegistrations** | Duplicate registration protection          |
+| **EventHistory**      | Event versioning audit log                 |
+| **OrganizerPayouts**  | Commission + revenue sharing               |
+| **PriceHistory**      | Dynamic pricing changes                    |
 
 ---
 
 # ⭐ **Features**
 
-### ✔️ Core Features
+## ✔️ Core System Features
 
-* User, Event & Registration management
-* Feedback rating validations
+* User / Event / Registration management
 * Attendance tracking
-* Category-wise event insights
-* Revenue calculations
+* Feedback management
+* Category-based insights
+* Revenue analytics
 
-### ✔️ Advanced Features
+## ✔️ Database Optimization
 
-* **Stored procedure** to generate event summary
-* **Function** to compute average ratings
-* **Trigger** for auto-cleaning invalid feedback
-* **Views** for dashboards
-* **Indexes** for performance optimization
+* Multi-column indexes
+* Proper foreign key mapping
+* Check constraints
+* Normalized relational structure
 
-### ✔️ Analytical Queries Included
+## ✔️ Advanced SQL Implementations
 
-* Event popularity
-* Category-wise top performers
-* Revenue generation
-* User attendance analysis
-* Leaderboards
+### 📌 Stored Procedure
+
+* `GetEventSummary()`
+* `UpdateEventPrices()` (Dynamic Pricing Engine)
+
+### 📌 SQL Function
+
+* `GetEventAverageRating()`
+
+### 📌 Triggers
+
+* Clean invalid ratings
+* Prevent spam registrations
+* Block over-capacity entries
+* Auto-add users to waitlist
+* Event update audit logging
+* Fraud detection trigger
+
+### 📌 Views (Dashboards)
+
+* `EventRevenueView`
+* `UserAttendanceView`
+* `UserBadgeView`
+* `OrganizerPayoutView`
+* `RefundAnalytics`
+* `UserEventRecommendations`
+
+---
+
+# 🧠 **Advanced Add-On Systems**
+
+### 🔥 1. AI-Style Recommendation Engine
+
+Recommends event categories based on user interest & attendance frequency.
+
+### 🔥 2. Spam Registration Detector
+
+Detects duplicate / multiple registrations for same event.
+
+### 🔥 3. Refund & Cancellation Analytics
+
+Tracks refunds and losses.
+
+### 🔥 4. Event Version History
+
+Tracks every event update (name, category, price).
+
+### 🔥 5. Organizer Payout System
+
+Automatically calculates commission & payout amounts.
+
+### 🔥 6. User Badge Achievement System
+
+Awards Bronze / Silver / Gold badges based on attendance.
+
+### 🔥 7. Smart Event Capacity
+
+Blocks new registrations when event limit reaches.
+
+### 🔥 8. Auto Waitlist System
+
+Automatically moves overflow users to waitlist.
+
+### 🔥 9. Predictive Dynamic Pricing
+
+Ticket price increases based on event popularity & attendance.
+
+### 🔥 10. Fraud Detection Engine
+
+Flags underage or suspicious registrations.
 
 ---
 
 # 🛠 **Tech Stack**
 
-| Technology      | Purpose                      |
-| --------------- | ---------------------------- |
-| **SQL / MySQL** | Database engine              |
-| **GitHub**      | Version control              |
-| **ERD Tools**   | (optional) For visualization |
+| Technology                   | Purpose                 |
+| ---------------------------- | ----------------------- |
+| **MySQL**                    | Database engine         |
+| **GitHub**                   | Version control         |
+| **Workbench / phpMyAdmin**   | DB interface            |
+| **SQL Triggers, Views, SPs** | Advanced database logic |
 
 ---
 
@@ -98,112 +185,105 @@ Foreign keys ensure proper relational integrity across the system.
 
 ### 1️⃣ Clone the repository
 
-
+```
 git clone https://github.com/karmaboy1309/event-management-sql.git
-
+```
 
 ### 2️⃣ Import the SQL file
 
-Open MySQL Workbench / phpMyAdmin / CLI:
-
-
+```
 SOURCE event_management.sql;
+```
 
+### 3️⃣ Test features
 
-### 3️⃣ Run analytical queries or test stored procedures:
-
-
+```
 CALL GetEventSummary(201);
 SELECT * FROM EventRevenueView;
-
+SELECT * FROM UserBadgeView;
+CALL UpdateEventPrices();
+```
 
 ---
 
 # 🧩 **Database Objects**
 
-## 📌 **Tables**
+## 📌 Tables (Core + Advanced)
 
 * Users
 * Events
 * Organizers
 * Registrations
-
-### Relationships:
-
-* `Events.organizer_id → Organizers.organizer_id`
-* `Registrations.user_id → Users.user_id`
-* `Registrations.event_id → Events.event_id`
-
----
-
-## ⚡ **Indexes**
-
-Improves read performance:
-
-* `idx_registrations_user`
-* `idx_registrations_event`
-* `idx_users_city`
-* `idx_events_category`
+* SpamRegistrations
+* Refunds
+* EventHistory
+* PriceHistory
+* UserBadges
+* Waitlist
+* OrganizerPayouts
+* FraudFlags
 
 ---
 
-## 🧮 **Stored Procedures**
+## ⚡ Indexes
 
-### **GetEventSummary(event_id)**
-
-Provides:
-
-* Event name
-* Category
-* Ticket price
-* Total registrations
-* Average rating
+* idx_registrations_user
+* idx_registrations_event
+* idx_users_city
+* idx_events_category
 
 ---
 
-## 🔢 **Function**
+## 🧮 Stored Procedures
 
-### **GetEventAverageRating(event_id)**
-
-Returns average feedback for any event.
-
----
-
-## 🎯 **Trigger**
-
-### **ValidateRatingBeforeInsert**
-
-Automatically fixes invalid ratings by converting them to `NULL`.
+* `GetEventSummary(event_id)`
+* `UpdateEventPrices()`
 
 ---
 
-## 📊 **Views**
+## 🔢 Function
 
-### **EventRevenueView**
-
-* tickets sold
-* total revenue
-* event-wise breakdown
-
-### **UserAttendanceView**
-
-* total attended events
-* average rating by user
+* `GetEventAverageRating(event_id)`
 
 ---
 
-# 📈 **Analytical Queries**
+## 🎯 Triggers Implemented
 
-Important queries included:
+| Trigger                    | Purpose                      |
+| -------------------------- | ---------------------------- |
+| ValidateRatingBeforeInsert | Cleans invalid ratings       |
+| DetectSpamRegistration     | Logs spam activity           |
+| BlockIfFullCapacity        | Prevents overbooking         |
+| AddToWaitlistIfFull        | Auto waitlist assignment     |
+| LogEventUpdate             | Stores event version history |
+| FraudScanOnRegistration    | Fraud detection              |
 
-* Event popularity
-* Total registrations & feedback summary
+---
+
+## 📊 Views (Dashboards)
+
+| View Name                | Purpose               |
+| ------------------------ | --------------------- |
+| EventRevenueView         | Revenue breakdown     |
+| UserAttendanceView       | User analytics        |
+| RefundAnalytics          | Refund insights       |
+| UserBadgeView            | Achievement system    |
+| OrganizerPayoutView      | Organizer earnings    |
+| UserEventRecommendations | Smart recommendations |
+
+---
+
+# 📈 **Analytical Queries Included**
+
+* Event popularity ranking
+* Average feedback per event
 * Events with rating > 8
-* Revenue generation
-* Category-wise leaders
+* Revenue calculation
+* Category top performers
 * Users with multiple attendances
-* Users who never attended
-* Attendance leaderboard
+* Users with zero attendance
+* Attendance-based leaderboard
+* Predictive pricing analysis
 
 ---
 
@@ -211,5 +291,10 @@ Important queries included:
 
 **Darshan Makwana**
 📍 India
-💻 Web Developer | MERN & SQL Enthusiast
-🔥 Always Learning. Always Building.
+💻 Full-Stack | MERN | SQL Developer
+🔥 Building daily, learning daily, shipping daily.
+
+---
+
+Bhai ye README **top-level professional** bana diya hai.
+Agar chaahe toh main **badges**, **screenshots**, **ER diagram**, ya **GitHub shields** bhi add kar dunga.
