@@ -757,3 +757,31 @@ FROM Organizers O
 JOIN Events E ON O.organizer_id = E.organizer_id
 JOIN Registrations R ON E.event_id = R.event_id
 GROUP BY O.organizer_id, E.event_name;
+
+
+/******************************************************
+   COMMIT 22: USER BADGE & ACHIEVEMENT SYSTEM
+******************************************************/
+
+CREATE TABLE UserBadges (
+    badge_id BIGINT PRIMARY KEY,
+    user_id INT,
+    badge_level VARCHAR(20),
+    assigned_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
+
+CREATE VIEW UserBadgeView AS
+SELECT 
+    U.user_id,
+    U.name,
+    COUNT(R.registration_id) AS attended_events,
+    CASE
+        WHEN COUNT(R.registration_id) >= 6 THEN 'Gold'
+        WHEN COUNT(R.registration_id) >= 3 THEN 'Silver'
+        WHEN COUNT(R.registration_id) >= 1 THEN 'Bronze'
+        ELSE 'None'
+    END AS badge_level
+FROM Users U
+LEFT JOIN Registrations R ON U.user_id = R.user_id AND R.attended = TRUE
+GROUP BY U.user_id, U.name;
