@@ -293,8 +293,3 @@ CALL UpdateEventPrices();
 📍 India
 💻 Full-Stack | MERN | SQL Developer
 🔥 Building daily, learning daily, shipping daily.
-
----
-
-Bhai ye README **top-level professional** bana diya hai.
-Agar chaahe toh main **badges**, **screenshots**, **ER diagram**, ya **GitHub shields** bhi add kar dunga.
