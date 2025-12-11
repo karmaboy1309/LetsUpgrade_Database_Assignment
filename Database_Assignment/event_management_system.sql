@@ -838,3 +838,40 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Event full — added to waitlist.';
     END IF;
 END;
+
+
+/******************************************************
+     25: DYNAMIC PREDICTIVE EVENT PRICING
+******************************************************/
+
+CREATE TABLE PriceHistory (
+    record_id BIGINT PRIMARY KEY,
+    event_id INT,
+    old_price DECIMAL(10,2),
+    new_price DECIMAL(10,2),
+    changed_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE PROCEDURE UpdateEventPrices()
+BEGIN
+    INSERT INTO PriceHistory (record_id, event_id, old_price, new_price)
+    SELECT 
+        UUID_SHORT(),
+        E.event_id,
+        E.ticket_price,
+        (E.ticket_price + (COUNT(R.registration_id) * 0.5))
+    FROM Events E
+    JOIN Registrations R ON E.event_id = R.event_id
+    GROUP BY E.event_id;
+
+    UPDATE Events E
+    JOIN (
+        SELECT 
+            event_id,
+            (ticket_price + (COUNT(*) * 0.5)) AS updated_price
+        FROM Registrations R
+        JOIN Events E2 ON R.event_id = E2.event_id
+        GROUP BY event_id
+    ) X ON E.event_id = X.event_id
+    SET E.ticket_price = X.updated_price;
+END;
