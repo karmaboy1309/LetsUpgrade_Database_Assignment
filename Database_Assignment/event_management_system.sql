@@ -875,3 +875,26 @@ BEGIN
     ) X ON E.event_id = X.event_id
     SET E.ticket_price = X.updated_price;
 END;
+
+
+/******************************************************
+     26: FRAUD DETECTION ENGINE
+******************************************************/
+
+CREATE TABLE FraudFlags (
+    fraud_id BIGINT PRIMARY KEY,
+    user_id INT,
+    event_id INT,
+    reason VARCHAR(255),
+    flagged_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER FraudScanOnRegistration
+BEFORE INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    -- Rule 1: Underage
+    IF (SELECT age FROM Users WHERE user_id = NEW.user_id) < 18 THEN
+        INSERT INTO FraudFlags VALUES (UUID_SHORT(), NEW.user_id, NEW.event_id, 'Underage user', NOW());
+    END IF;
+END;
