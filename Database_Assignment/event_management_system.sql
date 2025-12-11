@@ -808,3 +808,33 @@ BEGIN
         SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Event capacity full. Cannot register.';
     END IF;
 END;
+
+
+/******************************************************
+     24: AUTO WAITLIST SYSTEM
+******************************************************/
+
+CREATE TABLE Waitlist (
+    wait_id BIGINT PRIMARY KEY,
+    user_id INT,
+    event_id INT,
+    added_at DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TRIGGER AddToWaitlistIfFull
+BEFORE INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    DECLARE total INT;
+    
+    SELECT COUNT(*) INTO total
+    FROM Registrations
+    WHERE event_id = NEW.event_id;
+    
+    IF total >= (SELECT capacity FROM Events WHERE event_id = NEW.event_id) THEN
+        INSERT INTO Waitlist (wait_id, user_id, event_id)
+        VALUES (UUID_SHORT(), NEW.user_id, NEW.event_id);
+        
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Event full — added to waitlist.';
+    END IF;
+END;
