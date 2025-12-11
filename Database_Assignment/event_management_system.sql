@@ -760,7 +760,7 @@ GROUP BY O.organizer_id, E.event_name;
 
 
 /******************************************************
-   COMMIT 22: USER BADGE & ACHIEVEMENT SYSTEM
+    22: USER BADGE & ACHIEVEMENT SYSTEM
 ******************************************************/
 
 CREATE TABLE UserBadges (
@@ -785,3 +785,26 @@ SELECT
 FROM Users U
 LEFT JOIN Registrations R ON U.user_id = R.user_id AND R.attended = TRUE
 GROUP BY U.user_id, U.name;
+
+
+/******************************************************
+     23: SMART EVENT CAPACITY SYSTEM
+******************************************************/
+
+ALTER TABLE Events
+ADD capacity INT DEFAULT 100;
+
+CREATE TRIGGER BlockIfFullCapacity
+BEFORE INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    DECLARE total INT;
+    
+    SELECT COUNT(*) INTO total
+    FROM Registrations
+    WHERE event_id = NEW.event_id;
+    
+    IF total >= (SELECT capacity FROM Events WHERE event_id = NEW.event_id) THEN
+        SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Event capacity full. Cannot register.';
+    END IF;
+END;
