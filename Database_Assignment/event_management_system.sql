@@ -975,3 +975,27 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+
+--  31: Admin Audit Log table
+CREATE TABLE AdminAuditLogs (
+    log_id INT AUTO_INCREMENT PRIMARY KEY,
+    admin_id INT,
+    action_name VARCHAR(100),
+    affected_table VARCHAR(50),
+    action_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Trigger: Log event creation
+DELIMITER $$
+
+CREATE TRIGGER LogEventCreation
+AFTER INSERT ON Events
+FOR EACH ROW
+BEGIN
+    INSERT INTO AdminAuditLogs(admin_id, action_name, affected_table)
+    VALUES (1, 'CREATE_EVENT', 'Events');
+END $$
+
+DELIMITER ;
