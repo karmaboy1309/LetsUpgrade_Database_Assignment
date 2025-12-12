@@ -898,3 +898,11 @@ BEGIN
         INSERT INTO FraudFlags VALUES (UUID_SHORT(), NEW.user_id, NEW.event_id, 'Underage user', NOW());
     END IF;
 END;
+
+
+--  27: Add event cancellation columns
+ALTER TABLE Events
+ADD COLUMN is_cancelled BOOLEAN DEFAULT 0;
+
+ALTER TABLE Events
+ADD COLUMN cancel_reason VARCHAR(255) NULL;
