@@ -927,3 +927,20 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+
+--  29: View for upcoming events
+CREATE OR REPLACE VIEW UpcomingEventsView AS
+SELECT 
+    e.event_id,
+    e.event_name,
+    e.event_date,
+    o.organizer_name,
+    (SELECT COUNT(*) 
+     FROM Registrations r 
+     WHERE r.event_id = e.event_id) AS total_registrations
+FROM Events e
+JOIN Organizers o ON e.organizer_id = o.organizer_id
+WHERE e.event_date > CURRENT_DATE
+  AND e.is_cancelled = 0;
