@@ -944,3 +944,34 @@ FROM Events e
 JOIN Organizers o ON e.organizer_id = o.organizer_id
 WHERE e.event_date > CURRENT_DATE
   AND e.is_cancelled = 0;
+
+
+--  30: Function to calculate attendance percentage
+DELIMITER $$
+
+CREATE FUNCTION GetUserAttendancePercentage(p_user_id INT)
+RETURNS DECIMAL(5,2)
+DETERMINISTIC
+BEGIN
+    DECLARE total_events INT;
+    DECLARE attended_events INT;
+    DECLARE percentage DECIMAL(5,2);
+
+    SELECT COUNT(*) INTO total_events
+    FROM Registrations
+    WHERE user_id = p_user_id;
+
+    SELECT COUNT(*) INTO attended_events
+    FROM Registrations
+    WHERE user_id = p_user_id
+      AND attended = 1;
+
+    IF total_events = 0 THEN
+        RETURN 0;
+    END IF;
+
+    SET percentage = (attended_events / total_events) * 100;
+    RETURN percentage;
+END $$
+
+DELIMITER ;
