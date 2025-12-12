@@ -906,3 +906,24 @@ ADD COLUMN is_cancelled BOOLEAN DEFAULT 0;
 
 ALTER TABLE Events
 ADD COLUMN cancel_reason VARCHAR(255) NULL;
+
+
+--  28: Stored Procedure to cancel event
+DELIMITER $$
+
+CREATE PROCEDURE CancelEvent(
+    IN p_event_id INT,
+    IN p_reason VARCHAR(255)
+)
+BEGIN
+    UPDATE Events
+    SET is_cancelled = 1,
+        cancel_reason = p_reason
+    WHERE event_id = p_event_id;
+
+    UPDATE Registrations
+    SET attended = 0, rating = NULL
+    WHERE event_id = p_event_id;
+END $$
+
+DELIMITER ;
