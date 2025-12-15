@@ -1004,3 +1004,30 @@ DELIMITER ;
 --  32: Add capacity to Events
 ALTER TABLE Events
 ADD COLUMN capacity INT NOT NULL DEFAULT 100;
+
+
+--  33: Prevent overbooking
+DELIMITER $$
+
+CREATE TRIGGER PreventOverbooking
+BEFORE INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    DECLARE total_regs INT;
+    DECLARE max_capacity INT;
+
+    SELECT COUNT(*) INTO total_regs
+    FROM Registrations
+    WHERE event_id = NEW.event_id;
+
+    SELECT capacity INTO max_capacity
+    FROM Events
+    WHERE event_id = NEW.event_id;
+
+    IF total_regs >= max_capacity THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Event capacity full. Registration blocked.';
+    END IF;
+END $$
+
+DELIMITER ;
