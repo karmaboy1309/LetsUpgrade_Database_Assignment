@@ -1072,3 +1072,16 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+--  36: Event capacity dashboard
+CREATE OR REPLACE VIEW EventCapacityStatusView AS
+SELECT
+    e.event_id,
+    e.event_name,
+    e.capacity,
+    COUNT(r.registration_id) AS total_registrations,
+    (e.capacity - COUNT(r.registration_id)) AS seats_remaining
+FROM Events e
+LEFT JOIN Registrations r ON e.event_id = r.event_id
+GROUP BY e.event_id, e.event_name, e.capacity;
