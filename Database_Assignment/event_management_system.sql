@@ -1031,3 +1031,14 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+--  34: Waitlist table
+CREATE TABLE Waitlist (
+    waitlist_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    event_id INT NOT NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
