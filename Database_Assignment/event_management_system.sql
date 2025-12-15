@@ -999,3 +999,8 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+--  32: Add capacity to Events
+ALTER TABLE Events
+ADD COLUMN capacity INT NOT NULL DEFAULT 100;
