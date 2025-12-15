@@ -1042,3 +1042,33 @@ CREATE TABLE Waitlist (
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (event_id) REFERENCES Events(event_id)
 );
+
+
+--  35: Auto add to waitlist
+DELIMITER $$
+
+CREATE TRIGGER AddToWaitlist
+BEFORE INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    DECLARE total_regs INT;
+    DECLARE max_capacity INT;
+
+    SELECT COUNT(*) INTO total_regs
+    FROM Registrations
+    WHERE event_id = NEW.event_id;
+
+    SELECT capacity INTO max_capacity
+    FROM Events
+    WHERE event_id = NEW.event_id;
+
+    IF total_regs >= max_capacity THEN
+        INSERT INTO Waitlist(user_id, event_id)
+        VALUES (NEW.user_id, NEW.event_id);
+
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Event full. User added to waitlist.';
+    END IF;
+END $$
+
+DELIMITER ;
