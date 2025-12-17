@@ -1096,3 +1096,16 @@ CREATE TABLE Refunds (
     refunded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (registration_id) REFERENCES Registrations(registration_id)
 );
+
+
+
+--  38: Refund analytics view
+CREATE OR REPLACE VIEW RefundAnalyticsView AS
+SELECT
+    e.event_name,
+    COUNT(rf.refund_id) AS total_refunds,
+    SUM(rf.refund_amount) AS total_refund_amount
+FROM Refunds rf
+JOIN Registrations r ON rf.registration_id = r.registration_id
+JOIN Events e ON r.event_id = e.event_id
+GROUP BY e.event_name;
