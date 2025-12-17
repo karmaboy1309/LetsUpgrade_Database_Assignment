@@ -1085,3 +1085,14 @@ SELECT
 FROM Events e
 LEFT JOIN Registrations r ON e.event_id = r.event_id
 GROUP BY e.event_id, e.event_name, e.capacity;
+
+
+--  37: Refunds table
+CREATE TABLE Refunds (
+    refund_id INT AUTO_INCREMENT PRIMARY KEY,
+    registration_id INT NOT NULL,
+    refund_amount DECIMAL(10,2) NOT NULL,
+    refund_reason VARCHAR(255),
+    refunded_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (registration_id) REFERENCES Registrations(registration_id)
+);
