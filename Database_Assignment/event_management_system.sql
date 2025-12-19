@@ -1153,3 +1153,17 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+
+
+--  41: Organizer revenue dashboard
+CREATE OR REPLACE VIEW OrganizerRevenueDashboard AS
+SELECT
+    o.organizer_name,
+    e.event_name,
+    op.payout_amount,
+    op.payout_status
+FROM OrganizerPayouts op
+JOIN Events e ON op.event_id = e.event_id
+JOIN Organizers o ON op.organizer_id = o.organizer_id;
