@@ -1109,3 +1109,15 @@ FROM Refunds rf
 JOIN Registrations r ON rf.registration_id = r.registration_id
 JOIN Events e ON r.event_id = e.event_id
 GROUP BY e.event_name;
+
+
+--  39: Organizer payouts table
+CREATE TABLE OrganizerPayouts (
+    payout_id INT AUTO_INCREMENT PRIMARY KEY,
+    organizer_id INT NOT NULL,
+    event_id INT NOT NULL,
+    payout_amount DECIMAL(10,2) NOT NULL,
+    payout_status VARCHAR(20) DEFAULT 'PENDING',
+    paid_at TIMESTAMP NULL,
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
