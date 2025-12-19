@@ -1121,3 +1121,35 @@ CREATE TABLE OrganizerPayouts (
     paid_at TIMESTAMP NULL,
     FOREIGN KEY (event_id) REFERENCES Events(event_id)
 );
+
+
+--  40: Organizer payout calculation
+DELIMITER $$
+
+CREATE PROCEDURE GenerateOrganizerPayout(IN p_event_id INT)
+BEGIN
+    DECLARE total_revenue DECIMAL(10,2);
+    DECLARE org_id INT;
+
+    SELECT 
+        COUNT(r.registration_id) * e.ticket_price,
+        e.organizer_id
+    INTO total_revenue, org_id
+    FROM Events e
+    JOIN Registrations r ON e.event_id = r.event_id
+    WHERE e.event_id = p_event_id
+    GROUP BY e.organizer_id, e.ticket_price;
+
+    INSERT INTO OrganizerPayouts (
+        organizer_id,
+        event_id,
+        payout_amount
+    )
+    VALUES (
+        org_id,
+        p_event_id,
+        total_revenue * 0.8
+    );
+END $$
+
+DELIMITER ;
