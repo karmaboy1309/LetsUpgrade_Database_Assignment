@@ -1286,3 +1286,27 @@ CREATE TABLE UserLoginActivity (
     login_status VARCHAR(20),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+
+
+--   51: Log user login trigger
+DELIMITER $$
+
+CREATE TRIGGER LogUserLogin
+AFTER INSERT ON UserLoginActivity
+FOR EACH ROW
+BEGIN
+    IF NEW.login_status = 'SUCCESS' THEN
+        INSERT INTO AdminAuditLogs(
+            admin_id,
+            action_name,
+            affected_table
+        )
+        VALUES (
+            NEW.user_id,
+            'USER_LOGIN',
+            'UserLoginActivity'
+        );
+    END IF;
+END $$
+
+DELIMITER ;
