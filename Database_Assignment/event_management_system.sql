@@ -1233,3 +1233,15 @@ LEFT JOIN Registrations r
 WHERE u.is_active = 1
 GROUP BY u.user_id, u.name
 ORDER BY total_events_attended DESC;
+
+
+--  47: Roles table
+CREATE TABLE Roles (
+    role_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL
+);
+
+INSERT INTO Roles (role_name) VALUES
+('ADMIN'),
+('ORGANIZER'),
+('USER');
