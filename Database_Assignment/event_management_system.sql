@@ -1255,3 +1255,23 @@ ADD COLUMN role_id INT DEFAULT 3;
 ALTER TABLE Users
 ADD CONSTRAINT fk_user_role
 FOREIGN KEY (role_id) REFERENCES Roles(role_id);
+
+
+
+--  49: Event recommendation view
+CREATE OR REPLACE VIEW EventRecommendationView AS
+SELECT DISTINCT
+    u.user_id,
+    u.name AS user_name,
+    e.event_name,
+    e.category
+FROM Users u
+JOIN Registrations r ON u.user_id = r.user_id
+JOIN Events e ON r.event_id = e.event_id
+WHERE e.category IN (
+    SELECT e2.category
+    FROM Registrations r2
+    JOIN Events e2 ON r2.event_id = e2.event_id
+    WHERE r2.user_id = u.user_id
+)
+AND e.is_cancelled = 0;
