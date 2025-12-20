@@ -1275,3 +1275,14 @@ WHERE e.category IN (
     WHERE r2.user_id = u.user_id
 )
 AND e.is_cancelled = 0;
+
+
+
+--   50: Login activity table
+CREATE TABLE UserLoginActivity (
+    login_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT NOT NULL,
+    login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    login_status VARCHAR(20),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
