@@ -1167,3 +1167,15 @@ SELECT
 FROM OrganizerPayouts op
 JOIN Events e ON op.event_id = e.event_id
 JOIN Organizers o ON op.organizer_id = o.organizer_id;
+
+
+
+--  42: Event feedback summary table
+CREATE TABLE EventFeedbackSummary (
+    summary_id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    avg_rating DECIMAL(4,2),
+    total_feedbacks INT,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
