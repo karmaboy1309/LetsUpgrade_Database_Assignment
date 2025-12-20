@@ -1203,3 +1203,12 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+
+--  44: Performance indexes
+CREATE INDEX idx_reg_event_attended
+ON Registrations(event_id, attended);
+
+CREATE INDEX idx_reg_event_rating
+ON Registrations(event_id, feedback_rating);
