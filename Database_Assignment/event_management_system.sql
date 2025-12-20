@@ -1212,3 +1212,9 @@ ON Registrations(event_id, attended);
 
 CREATE INDEX idx_reg_event_rating
 ON Registrations(event_id, feedback_rating);
+
+
+
+-- 45: Soft delete users
+ALTER TABLE Users
+ADD COLUMN is_active BOOLEAN DEFAULT 1;
