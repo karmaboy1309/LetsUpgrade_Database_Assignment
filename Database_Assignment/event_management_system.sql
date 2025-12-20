@@ -1179,3 +1179,27 @@ CREATE TABLE EventFeedbackSummary (
     last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (event_id) REFERENCES Events(event_id)
 );
+
+
+
+--  43: Refresh feedback summary
+DELIMITER $$
+
+CREATE PROCEDURE RefreshEventFeedbackSummary(IN p_event_id INT)
+BEGIN
+    INSERT INTO EventFeedbackSummary (event_id, avg_rating, total_feedbacks)
+    SELECT
+        event_id,
+        AVG(feedback_rating),
+        COUNT(feedback_rating)
+    FROM Registrations
+    WHERE event_id = p_event_id
+      AND feedback_rating IS NOT NULL
+    GROUP BY event_id
+    ON DUPLICATE KEY UPDATE
+        avg_rating = VALUES(avg_rating),
+        total_feedbacks = VALUES(total_feedbacks),
+        last_updated = CURRENT_TIMESTAMP;
+END $$
+
+DELIMITER ;
