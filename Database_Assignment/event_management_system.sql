@@ -1245,3 +1245,13 @@ INSERT INTO Roles (role_name) VALUES
 ('ADMIN'),
 ('ORGANIZER'),
 ('USER');
+
+
+
+--  48: User roles mapping
+ALTER TABLE Users
+ADD COLUMN role_id INT DEFAULT 3;
+
+ALTER TABLE Users
+ADD CONSTRAINT fk_user_role
+FOREIGN KEY (role_id) REFERENCES Roles(role_id);
