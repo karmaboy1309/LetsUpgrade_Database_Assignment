@@ -1218,3 +1218,18 @@ ON Registrations(event_id, feedback_rating);
 -- 45: Soft delete users
 ALTER TABLE Users
 ADD COLUMN is_active BOOLEAN DEFAULT 1;
+
+
+
+--  46: Active users leaderboard
+CREATE OR REPLACE VIEW ActiveUsersLeaderboard AS
+SELECT
+    u.user_id,
+    u.name,
+    COUNT(r.registration_id) AS total_events_attended
+FROM Users u
+LEFT JOIN Registrations r
+    ON u.user_id = r.user_id AND r.attended = 1
+WHERE u.is_active = 1
+GROUP BY u.user_id, u.name
+ORDER BY total_events_attended DESC;
