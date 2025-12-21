@@ -1409,3 +1409,13 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+CREATE OR REPLACE VIEW ArchivedEventsView AS
+SELECT
+    event_name,
+    category,
+    created_at
+FROM Events
+WHERE is_archived = 1;
+
