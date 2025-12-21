@@ -1392,3 +1392,7 @@ SELECT
 FROM NotificationLogs n
 JOIN Users u ON n.user_id = u.user_id
 ORDER BY n.created_at DESC;
+
+
+ALTER TABLE Events
+ADD COLUMN is_archived BOOLEAN DEFAULT 0;
