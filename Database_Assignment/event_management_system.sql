@@ -1337,3 +1337,5 @@ JOIN EventTagMapping etm ON et.tag_id = etm.tag_id
 GROUP BY et.tag_name
 ORDER BY total_events DESC;
 
+ALTER TABLE Events
+ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
