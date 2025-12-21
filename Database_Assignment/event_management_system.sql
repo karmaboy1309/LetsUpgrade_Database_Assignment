@@ -1365,3 +1365,20 @@ CREATE TABLE NotificationLogs (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+
+
+DELIMITER $$
+
+CREATE TRIGGER NotifyOnEventCancel
+AFTER UPDATE ON Events
+FOR EACH ROW
+BEGIN
+    IF NEW.is_cancelled = 1 AND OLD.is_cancelled = 0 THEN
+        INSERT INTO NotificationLogs (user_id, message)
+        SELECT user_id, CONCAT('Event ', NEW.event_name, ' has been cancelled')
+        FROM Registrations
+        WHERE event_id = NEW.event_id;
+    END IF;
+END $$
+
+DELIMITER ;
