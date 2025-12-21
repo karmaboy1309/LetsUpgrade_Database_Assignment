@@ -1396,3 +1396,16 @@ ORDER BY n.created_at DESC;
 
 ALTER TABLE Events
 ADD COLUMN is_archived BOOLEAN DEFAULT 0;
+
+
+DELIMITER $$
+
+CREATE PROCEDURE ArchivePastEvents()
+BEGIN
+    UPDATE Events
+    SET is_archived = 1
+    WHERE event_date < CURRENT_DATE
+      AND is_archived = 0;
+END $$
+
+DELIMITER ;
