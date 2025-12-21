@@ -1339,3 +1339,19 @@ ORDER BY total_events DESC;
 
 ALTER TABLE Events
 ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+
+
+DELIMITER $$
+
+CREATE TRIGGER BlockCancelledEventRegistration
+BEFORE INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    IF (SELECT is_cancelled FROM Events WHERE event_id = NEW.event_id) = 1 THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Cannot register for a cancelled event';
+    END IF;
+END $$
+
+DELIMITER ;
