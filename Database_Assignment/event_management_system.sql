@@ -1355,3 +1355,13 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+
+CREATE TABLE NotificationLogs (
+    notification_id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    message VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
