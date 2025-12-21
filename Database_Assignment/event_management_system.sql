@@ -1326,3 +1326,14 @@ CREATE TABLE EventTagMapping (
     FOREIGN KEY (event_id) REFERENCES Events(event_id),
     FOREIGN KEY (tag_id) REFERENCES EventTags(tag_id)
 );
+
+
+CREATE OR REPLACE VIEW PopularTagsView AS
+SELECT
+    et.tag_name,
+    COUNT(etm.event_id) AS total_events
+FROM EventTags et
+JOIN EventTagMapping etm ON et.tag_id = etm.tag_id
+GROUP BY et.tag_name
+ORDER BY total_events DESC;
+
