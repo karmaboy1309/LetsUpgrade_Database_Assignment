@@ -1312,3 +1312,17 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+CREATE TABLE EventTags (
+    tag_id INT AUTO_INCREMENT PRIMARY KEY,
+    tag_name VARCHAR(50) UNIQUE NOT NULL
+);
+
+CREATE TABLE EventTagMapping (
+    event_id INT,
+    tag_id INT,
+    PRIMARY KEY (event_id, tag_id),
+    FOREIGN KEY (event_id) REFERENCES Events(event_id),
+    FOREIGN KEY (tag_id) REFERENCES EventTags(tag_id)
+);
