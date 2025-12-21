@@ -1288,6 +1288,8 @@ CREATE TABLE UserLoginActivity (
 );
 
 
+
+
 --   51: Log user login trigger
 DELIMITER $$
 
