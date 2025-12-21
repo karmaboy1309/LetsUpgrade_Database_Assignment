@@ -1382,3 +1382,13 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+CREATE OR REPLACE VIEW UserNotificationInbox AS
+SELECT
+    u.name,
+    n.message,
+    n.created_at
+FROM NotificationLogs n
+JOIN Users u ON n.user_id = u.user_id
+ORDER BY n.created_at DESC;
