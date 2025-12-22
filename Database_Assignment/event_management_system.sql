@@ -1419,3 +1419,11 @@ SELECT
 FROM Events
 WHERE is_archived = 1;
 
+CREATE TABLE EventSessions (
+    session_id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    session_title VARCHAR(100),
+    start_time DATETIME,
+    end_time DATETIME,
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
