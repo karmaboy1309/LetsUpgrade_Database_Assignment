@@ -1487,3 +1487,12 @@ SELECT
 FROM UserFavoriteEvents f
 JOIN Users u ON f.user_id = u.user_id
 JOIN Events e ON f.event_id = e.event_id;
+
+
+
+CREATE TABLE EventCheckIns (
+    checkin_id INT AUTO_INCREMENT PRIMARY KEY,
+    registration_id INT NOT NULL,
+    checkin_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (registration_id) REFERENCES Registrations(registration_id)
+);
