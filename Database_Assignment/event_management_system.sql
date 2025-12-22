@@ -1519,3 +1519,17 @@ CREATE TABLE EventFeedbackComments (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (registration_id) REFERENCES Registrations(registration_id)
 );
+
+
+
+CREATE OR REPLACE VIEW FeedbackModerationView AS
+SELECT
+    e.event_name,
+    u.name AS user_name,
+    c.comment,
+    c.created_at
+FROM EventFeedbackComments c
+JOIN Registrations r ON c.registration_id = r.registration_id
+JOIN Users u ON r.user_id = u.user_id
+JOIN Events e ON r.event_id = e.event_id
+ORDER BY c.created_at DESC;
