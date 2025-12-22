@@ -1510,3 +1510,12 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+CREATE TABLE EventFeedbackComments (
+    comment_id INT AUTO_INCREMENT PRIMARY KEY,
+    registration_id INT NOT NULL,
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (registration_id) REFERENCES Registrations(registration_id)
+);
