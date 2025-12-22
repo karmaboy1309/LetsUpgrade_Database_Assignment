@@ -1427,3 +1427,14 @@ CREATE TABLE EventSessions (
     end_time DATETIME,
     FOREIGN KEY (event_id) REFERENCES Events(event_id)
 );
+
+
+CREATE OR REPLACE VIEW EventScheduleView AS
+SELECT
+    e.event_name,
+    s.session_title,
+    s.start_time,
+    s.end_time
+FROM EventSessions s
+JOIN Events e ON s.event_id = e.event_id
+ORDER BY s.start_time;
