@@ -1453,3 +1453,16 @@ CREATE TABLE SessionSpeakers (
     FOREIGN KEY (session_id) REFERENCES EventSessions(session_id),
     FOREIGN KEY (speaker_id) REFERENCES Speakers(speaker_id)
 );
+
+
+
+CREATE OR REPLACE VIEW SpeakerLineupView AS
+SELECT
+    e.event_name,
+    s.session_title,
+    sp.speaker_name,
+    sp.expertise
+FROM SessionSpeakers ss
+JOIN EventSessions s ON ss.session_id = s.session_id
+JOIN Speakers sp ON ss.speaker_id = sp.speaker_id
+JOIN Events e ON s.event_id = e.event_id;
