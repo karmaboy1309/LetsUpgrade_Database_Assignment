@@ -1466,3 +1466,14 @@ FROM SessionSpeakers ss
 JOIN EventSessions s ON ss.session_id = s.session_id
 JOIN Speakers sp ON ss.speaker_id = sp.speaker_id
 JOIN Events e ON s.event_id = e.event_id;
+
+
+
+CREATE TABLE UserFavoriteEvents (
+    user_id INT,
+    event_id INT,
+    favorited_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, event_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id),
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
