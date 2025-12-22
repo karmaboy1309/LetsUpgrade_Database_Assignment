@@ -1496,3 +1496,17 @@ CREATE TABLE EventCheckIns (
     checkin_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (registration_id) REFERENCES Registrations(registration_id)
 );
+
+
+DELIMITER $$
+
+CREATE TRIGGER AutoAttendanceOnCheckin
+AFTER INSERT ON EventCheckIns
+FOR EACH ROW
+BEGIN
+    UPDATE Registrations
+    SET attended = 1
+    WHERE registration_id = NEW.registration_id;
+END $$
+
+DELIMITER ;
