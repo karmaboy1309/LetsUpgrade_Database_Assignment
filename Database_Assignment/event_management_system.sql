@@ -1477,3 +1477,13 @@ CREATE TABLE UserFavoriteEvents (
     FOREIGN KEY (user_id) REFERENCES Users(user_id),
     FOREIGN KEY (event_id) REFERENCES Events(event_id)
 );
+
+
+CREATE OR REPLACE VIEW UserFavoriteEventsView AS
+SELECT
+    u.name,
+    e.event_name,
+    e.category
+FROM UserFavoriteEvents f
+JOIN Users u ON f.user_id = u.user_id
+JOIN Events e ON f.event_id = e.event_id;
