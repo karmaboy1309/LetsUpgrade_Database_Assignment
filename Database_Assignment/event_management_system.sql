@@ -1438,3 +1438,18 @@ SELECT
 FROM EventSessions s
 JOIN Events e ON s.event_id = e.event_id
 ORDER BY s.start_time;
+
+
+CREATE TABLE Speakers (
+    speaker_id INT AUTO_INCREMENT PRIMARY KEY,
+    speaker_name VARCHAR(100),
+    expertise VARCHAR(100)
+);
+
+CREATE TABLE SessionSpeakers (
+    session_id INT,
+    speaker_id INT,
+    PRIMARY KEY (session_id, speaker_id),
+    FOREIGN KEY (session_id) REFERENCES EventSessions(session_id),
+    FOREIGN KEY (speaker_id) REFERENCES Speakers(speaker_id)
+);
