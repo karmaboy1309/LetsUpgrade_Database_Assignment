@@ -1533,3 +1533,17 @@ JOIN Registrations r ON c.registration_id = r.registration_id
 JOIN Users u ON r.user_id = u.user_id
 JOIN Events e ON r.event_id = e.event_id
 ORDER BY c.created_at DESC;
+
+
+
+-- Commit 72: Event reviews
+CREATE TABLE EventReviews (
+    review_id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT NOT NULL,
+    user_id INT NOT NULL,
+    rating INT CHECK (rating BETWEEN 1 AND 10),
+    review_text TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (event_id) REFERENCES Events(event_id),
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
