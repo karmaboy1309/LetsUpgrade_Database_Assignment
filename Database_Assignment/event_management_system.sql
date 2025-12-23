@@ -1579,3 +1579,18 @@ SELECT
 FROM Events e
 LEFT JOIN Registrations r ON e.event_id = r.event_id
 GROUP BY e.event_id, e.event_name;
+
+
+
+--   75: Similar events recommendation
+CREATE OR REPLACE VIEW SimilarEventsView AS
+SELECT
+    e1.event_name AS base_event,
+    e2.event_name AS similar_event,
+    e1.category
+FROM Events e1
+JOIN Events e2
+    ON e1.category = e2.category
+   AND e1.event_id <> e2.event_id
+WHERE e1.is_cancelled = 0
+  AND e2.is_cancelled = 0;
