@@ -1536,7 +1536,7 @@ ORDER BY c.created_at DESC;
 
 
 
--- Commit 72: Event reviews
+--  72: Event reviews
 CREATE TABLE EventReviews (
     review_id INT AUTO_INCREMENT PRIMARY KEY,
     event_id INT NOT NULL,
@@ -1547,3 +1547,18 @@ CREATE TABLE EventReviews (
     FOREIGN KEY (event_id) REFERENCES Events(event_id),
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+
+
+
+--  73: Event reviews dashboard
+CREATE OR REPLACE VIEW EventReviewsDashboard AS
+SELECT
+    e.event_name,
+    u.name AS reviewer,
+    r.rating,
+    r.review_text,
+    r.created_at
+FROM EventReviews r
+JOIN Events e ON r.event_id = e.event_id
+JOIN Users u ON r.user_id = u.user_id
+ORDER BY r.created_at DESC;
