@@ -1562,3 +1562,20 @@ FROM EventReviews r
 JOIN Events e ON r.event_id = e.event_id
 JOIN Users u ON r.user_id = u.user_id
 ORDER BY r.created_at DESC;
+
+
+
+--   74: Popularity score view
+CREATE OR REPLACE VIEW EventPopularityScoreView AS
+SELECT
+    e.event_id,
+    e.event_name,
+    COUNT(DISTINCT r.registration_id) AS total_registrations,
+    ROUND(AVG(r.feedback_rating), 2) AS avg_rating,
+    (
+        COUNT(DISTINCT r.registration_id) * 0.7 +
+        IFNULL(AVG(r.feedback_rating), 0) * 0.3
+    ) AS popularity_score
+FROM Events e
+LEFT JOIN Registrations r ON e.event_id = r.event_id
+GROUP BY e.event_id, e.event_name;
