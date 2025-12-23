@@ -1594,3 +1594,27 @@ JOIN Events e2
    AND e1.event_id <> e2.event_id
 WHERE e1.is_cancelled = 0
   AND e2.is_cancelled = 0;
+
+
+
+--  76: Cleanup procedure
+DELIMITER $$
+
+CREATE PROCEDURE CleanupInactiveData()
+BEGIN
+    -- Remove inactive users with no registrations
+    DELETE FROM Users
+    WHERE is_active = 0
+      AND user_id NOT IN (
+          SELECT DISTINCT user_id FROM Registrations
+      );
+
+    -- Remove archived events with no registrations
+    DELETE FROM Events
+    WHERE is_archived = 1
+      AND event_id NOT IN (
+          SELECT DISTINCT event_id FROM Registrations
+      );
+END $$
+
+DELIMITER ;
