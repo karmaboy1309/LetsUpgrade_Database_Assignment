@@ -1658,3 +1658,14 @@ ORDER BY total_revenue DESC;
 
 ALTER TABLE Events
 ADD COLUMN is_public BOOLEAN DEFAULT 1;
+
+
+CREATE OR REPLACE VIEW PublicEventsCatalog AS
+SELECT
+    event_name,
+    category,
+    ticket_price
+FROM Events
+WHERE is_public = 1
+  AND is_cancelled = 0
+  AND is_archived = 0;
