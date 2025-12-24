@@ -1644,3 +1644,12 @@ JOIN Events e ON e.category = p.preferred_category
 WHERE e.is_cancelled = 0
   AND e.is_archived = 0;
 
+CREATE OR REPLACE VIEW CategoryRevenueBreakdown AS
+SELECT
+    e.category,
+    SUM(e.ticket_price) AS total_revenue
+FROM Registrations r
+JOIN Events e ON r.event_id = e.event_id
+WHERE r.attended = 1
+GROUP BY e.category
+ORDER BY total_revenue DESC;
