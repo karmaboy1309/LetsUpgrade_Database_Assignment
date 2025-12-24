@@ -1628,3 +1628,19 @@ CREATE TABLE UserPreferences (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES Users(user_id)
 );
+
+
+
+CREATE OR REPLACE VIEW PersonalizedEventRecommendations AS
+SELECT
+    u.user_id,
+    u.name,
+    e.event_name,
+    e.category,
+    e.ticket_price
+FROM UserPreferences p
+JOIN Users u ON p.user_id = u.user_id
+JOIN Events e ON e.category = p.preferred_category
+WHERE e.is_cancelled = 0
+  AND e.is_archived = 0;
+
