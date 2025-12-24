@@ -1653,3 +1653,8 @@ JOIN Events e ON r.event_id = e.event_id
 WHERE r.attended = 1
 GROUP BY e.category
 ORDER BY total_revenue DESC;
+
+
+
+ALTER TABLE Events
+ADD COLUMN is_public BOOLEAN DEFAULT 1;
