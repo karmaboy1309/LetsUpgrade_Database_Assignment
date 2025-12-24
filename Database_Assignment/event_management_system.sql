@@ -1618,3 +1618,13 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+
+CREATE TABLE UserPreferences (
+    user_id INT PRIMARY KEY,
+    preferred_category VARCHAR(50),
+    preferred_city VARCHAR(100),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES Users(user_id)
+);
