@@ -1686,3 +1686,12 @@ SELECT
 FROM Users
 WHERE is_active = 1;
 
+
+CREATE TABLE EventCancellationAudit (
+    audit_id INT AUTO_INCREMENT PRIMARY KEY,
+    event_id INT,
+    cancelled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    reason VARCHAR(255),
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
+
