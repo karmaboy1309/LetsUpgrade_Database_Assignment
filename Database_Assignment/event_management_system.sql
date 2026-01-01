@@ -1695,3 +1695,17 @@ CREATE TABLE EventCancellationAudit (
     FOREIGN KEY (event_id) REFERENCES Events(event_id)
 );
 
+
+DELIMITER $$
+
+CREATE TRIGGER LogEventCancellation
+AFTER UPDATE ON Events
+FOR EACH ROW
+BEGIN
+    IF OLD.is_cancelled = 0 AND NEW.is_cancelled = 1 THEN
+        INSERT INTO EventCancellationAudit (event_id, reason)
+        VALUES (NEW.event_id, 'Cancelled by organizer');
+    END IF;
+END $$
+
+DELIMITER ;
