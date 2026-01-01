@@ -1709,3 +1709,14 @@ BEGIN
 END $$
 
 DELIMITER ;
+
+
+CREATE OR REPLACE VIEW CancelledEventsReport AS
+SELECT
+    e.event_name,
+    a.cancelled_at,
+    a.reason
+FROM EventCancellationAudit a
+JOIN Events e ON a.event_id = e.event_id
+ORDER BY a.cancelled_at DESC;
+
