@@ -1669,3 +1669,8 @@ FROM Events
 WHERE is_public = 1
   AND is_cancelled = 0
   AND is_archived = 0;
+
+
+
+ALTER TABLE Users
+ADD COLUMN is_active BOOLEAN DEFAULT 1;
