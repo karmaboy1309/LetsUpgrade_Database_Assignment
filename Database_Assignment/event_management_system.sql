@@ -1674,3 +1674,15 @@ WHERE is_public = 1
 
 ALTER TABLE Users
 ADD COLUMN is_active BOOLEAN DEFAULT 1;
+
+
+
+CREATE OR REPLACE VIEW ActiveUsersView AS
+SELECT
+    user_id,
+    name,
+    email,
+    city
+FROM Users
+WHERE is_active = 1;
+
