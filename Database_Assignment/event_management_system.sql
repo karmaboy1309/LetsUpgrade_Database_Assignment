@@ -1724,3 +1724,14 @@ ORDER BY a.cancelled_at DESC;
 ALTER TABLE Registrations
 ADD COLUMN is_waitlisted BOOLEAN DEFAULT 0;
 
+
+
+
+CREATE OR REPLACE VIEW EventWaitlistSummary AS
+SELECT
+    e.event_name,
+    COUNT(r.registration_id) AS waitlisted_users
+FROM Registrations r
+JOIN Events e ON r.event_id = e.event_id
+WHERE r.is_waitlisted = 1
+GROUP BY e.event_name;
