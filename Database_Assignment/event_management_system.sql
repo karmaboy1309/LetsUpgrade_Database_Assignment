@@ -1720,3 +1720,7 @@ FROM EventCancellationAudit a
 JOIN Events e ON a.event_id = e.event_id
 ORDER BY a.cancelled_at DESC;
 
+
+ALTER TABLE Registrations
+ADD COLUMN is_waitlisted BOOLEAN DEFAULT 0;
+
