@@ -1739,3 +1739,13 @@ GROUP BY e.event_name;
 
 CREATE INDEX idx_registrations_event_attended
 ON Registrations(event_id, attended);
+
+
+CREATE TRIGGER AutoMarkAttendance
+BEFORE UPDATE ON Registrations
+FOR EACH ROW
+SET NEW.attended = 
+    CASE 
+        WHEN NEW.feedback_rating IS NOT NULL THEN TRUE
+        ELSE NEW.attended
+    END;
