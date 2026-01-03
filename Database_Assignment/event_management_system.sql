@@ -1735,3 +1735,7 @@ FROM Registrations r
 JOIN Events e ON r.event_id = e.event_id
 WHERE r.is_waitlisted = 1
 GROUP BY e.event_name;
+
+
+CREATE INDEX idx_registrations_event_attended
+ON Registrations(event_id, attended);
