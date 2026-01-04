@@ -1755,3 +1755,14 @@ SET NEW.attended =
 
 ALTER TABLE Events
 ADD COLUMN is_active BOOLEAN DEFAULT 1;
+
+
+
+CREATE OR REPLACE VIEW ActiveEventsView AS
+SELECT
+    event_id,
+    event_name,
+    category,
+    ticket_price
+FROM Events
+WHERE is_active = 1;
