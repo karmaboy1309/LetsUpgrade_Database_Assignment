@@ -1749,3 +1749,9 @@ SET NEW.attended =
         WHEN NEW.feedback_rating IS NOT NULL THEN TRUE
         ELSE NEW.attended
     END;
+
+
+
+
+ALTER TABLE Events
+ADD COLUMN is_active BOOLEAN DEFAULT 1;
