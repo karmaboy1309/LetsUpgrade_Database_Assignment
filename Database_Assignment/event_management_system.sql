@@ -1789,3 +1789,53 @@ BEGIN
         SET NEW.is_waitlisted = 1;
     END IF;
 END;
+
+
+CREATE TABLE OrganizerPayouts (
+    payout_id INT AUTO_INCREMENT PRIMARY KEY,
+    organizer_id INT NOT NULL,
+    event_id INT NOT NULL,
+    total_revenue DECIMAL(10,2) NOT NULL,
+    platform_fee DECIMAL(10,2) NOT NULL,
+    payout_amount DECIMAL(10,2) NOT NULL,
+    payout_date DATE NOT NULL,
+    FOREIGN KEY (event_id) REFERENCES Events(event_id)
+);
+
+
+CREATE OR REPLACE VIEW OrganizerRevenueView AS
+SELECT
+    e.event_id,
+    e.event_name,
+    e.category,
+    COUNT(r.registration_id) AS tickets_sold,
+    e.ticket_price,
+    COUNT(r.registration_id) * e.ticket_price AS total_revenue,
+    ROUND((COUNT(r.registration_id) * e.ticket_price) * 0.10, 2) AS platform_fee,
+    ROUND((COUNT(r.registration_id) * e.ticket_price) * 0.90, 2) AS organizer_payout
+FROM Events e
+JOIN Registrations r ON e.event_id = r.event_id
+WHERE r.attended = TRUE
+GROUP BY e.event_id, e.event_name, e.category, e.ticket_price;
+
+
+CREATE PROCEDURE GenerateOrganizerPayout(IN p_event_id INT, IN p_organizer_id INT)
+BEGIN
+    INSERT INTO OrganizerPayouts (
+        organizer_id,
+        event_id,
+        total_revenue,
+        platform_fee,
+        payout_amount,
+        payout_date
+    )
+    SELECT
+        p_organizer_id,
+        event_id,
+        total_revenue,
+        platform_fee,
+        organizer_payout,
+        CURDATE()
+    FROM OrganizerRevenueView
+    WHERE event_id = p_event_id;
+END;
