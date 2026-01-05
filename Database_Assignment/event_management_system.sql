@@ -1770,3 +1770,22 @@ WHERE is_active = 1;
 
 ALTER TABLE Events
 ADD COLUMN capacity INT NOT NULL DEFAULT 100;
+
+
+CREATE TRIGGER PreventOverbooking
+BEFORE INSERT ON Registrations
+FOR EACH ROW
+BEGIN
+    DECLARE total_registered INT;
+
+    SELECT COUNT(*) INTO total_registered
+    FROM Registrations
+    WHERE event_id = NEW.event_id
+      AND attended IS NOT NULL;
+
+    IF total_registered >= (
+        SELECT capacity FROM Events WHERE event_id = NEW.event_id
+    ) THEN
+        SET NEW.is_waitlisted = 1;
+    END IF;
+END;
