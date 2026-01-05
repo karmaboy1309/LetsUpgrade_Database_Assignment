@@ -1766,3 +1766,7 @@ SELECT
     ticket_price
 FROM Events
 WHERE is_active = 1;
+
+
+ALTER TABLE Events
+ADD COLUMN capacity INT NOT NULL DEFAULT 100;
