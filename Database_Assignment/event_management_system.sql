@@ -1839,3 +1839,16 @@ BEGIN
     FROM OrganizerRevenueView
     WHERE event_id = p_event_id;
 END;
+
+
+CREATE TABLE RegistrationAuditLog (
+    audit_id INT AUTO_INCREMENT PRIMARY KEY,
+    registration_id INT NOT NULL,
+    action_type VARCHAR(50) NOT NULL,
+    action_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TRIGGER LogRegistrationInsert
+AFTER INSERT ON Registrations
+FOR EACH ROW
+INSERT INTO RegistrationAuditLog (registration_id, action_type)
+VALUES (NEW.registration_id, 'INSERT');
