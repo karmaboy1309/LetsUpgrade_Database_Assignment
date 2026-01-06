@@ -1852,3 +1852,14 @@ AFTER INSERT ON Registrations
 FOR EACH ROW
 INSERT INTO RegistrationAuditLog (registration_id, action_type)
 VALUES (NEW.registration_id, 'INSERT');
+
+
+CREATE OR REPLACE VIEW MonthlyRevenueView AS
+SELECT
+    DATE_FORMAT(r.registration_date, '%Y-%m') AS month,
+    e.event_name,
+    SUM(e.ticket_price) AS total_revenue
+FROM Registrations r
+JOIN Events e ON r.event_id = e.event_id
+WHERE r.attended = TRUE
+GROUP BY month, e.event_name;
