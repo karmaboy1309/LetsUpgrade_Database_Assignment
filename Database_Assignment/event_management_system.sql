@@ -1872,3 +1872,13 @@ CREATE TABLE UserRoles (
 ALTER TABLE Users
 ADD COLUMN role_id INT,
 ADD FOREIGN KEY (role_id) REFERENCES UserRoles(role_id);
+
+
+
+CREATE OR REPLACE VIEW RoleWiseUserSummary AS
+SELECT
+    ur.role_name,
+    COUNT(u.user_id) AS total_users
+FROM UserRoles ur
+LEFT JOIN Users u ON ur.role_id = u.role_id
+GROUP BY ur.role_name;
