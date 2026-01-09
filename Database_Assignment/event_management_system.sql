@@ -1863,3 +1863,12 @@ FROM Registrations r
 JOIN Events e ON r.event_id = e.event_id
 WHERE r.attended = TRUE
 GROUP BY month, e.event_name;
+
+
+CREATE TABLE UserRoles (
+    role_id INT AUTO_INCREMENT PRIMARY KEY,
+    role_name VARCHAR(50) UNIQUE NOT NULL
+);
+ALTER TABLE Users
+ADD COLUMN role_id INT,
+ADD FOREIGN KEY (role_id) REFERENCES UserRoles(role_id);
