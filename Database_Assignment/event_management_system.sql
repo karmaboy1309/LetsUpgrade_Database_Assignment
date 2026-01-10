@@ -1882,3 +1882,8 @@ SELECT
 FROM UserRoles ur
 LEFT JOIN Users u ON ur.role_id = u.role_id
 GROUP BY ur.role_name;
+
+
+ALTER TABLE Users
+ALTER city SET DEFAULT 'Unknown';
+
