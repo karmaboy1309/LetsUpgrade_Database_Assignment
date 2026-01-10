@@ -1887,3 +1887,5 @@ GROUP BY ur.role_name;
 ALTER TABLE Users
 ALTER city SET DEFAULT 'Unknown';
 
+CREATE INDEX idx_events_ticket_price
+ON Events(ticket_price);
