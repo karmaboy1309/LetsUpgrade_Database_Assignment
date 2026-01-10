@@ -1889,3 +1889,10 @@ ALTER city SET DEFAULT 'Unknown';
 
 CREATE INDEX idx_events_ticket_price
 ON Events(ticket_price);
+
+CREATE OR REPLACE VIEW EventCategoryCountView AS
+SELECT
+    category,
+    COUNT(event_id) AS total_events
+FROM Events
+GROUP BY category;
