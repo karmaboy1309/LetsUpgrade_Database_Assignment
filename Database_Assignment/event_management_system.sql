@@ -1899,3 +1899,14 @@ GROUP BY category;
 
 ALTER TABLE Events
 ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
+
+CREATE OR REPLACE VIEW RecentEventsView AS
+SELECT
+    event_id,
+    event_name,
+    category,
+    ticket_price,
+    created_at
+FROM Events
+ORDER BY created_at DESC;
+
