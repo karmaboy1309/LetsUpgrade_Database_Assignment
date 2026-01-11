@@ -1896,3 +1896,6 @@ SELECT
     COUNT(event_id) AS total_events
 FROM Events
 GROUP BY category;
+
+ALTER TABLE Events
+ADD COLUMN created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP;
