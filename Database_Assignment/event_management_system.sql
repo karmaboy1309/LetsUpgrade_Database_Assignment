@@ -1912,3 +1912,10 @@ ORDER BY created_at DESC;
 
 ALTER TABLE Users
 ADD COLUMN email VARCHAR(150) UNIQUE;
+CREATE OR REPLACE VIEW UserContactDirectory AS
+SELECT
+    name,
+    email,
+    city
+FROM Users
+WHERE email IS NOT NULL;
