@@ -1923,3 +1923,16 @@ WHERE email IS NOT NULL;
 
 ALTER TABLE Events
 ADD CONSTRAINT chk_ticket_price_positive CHECK (ticket_price >= 0);
+
+CREATE OR REPLACE VIEW EventPriceBandView AS
+SELECT
+    event_name,
+    category,
+    ticket_price,
+    CASE
+        WHEN ticket_price = 0 THEN 'Free'
+        WHEN ticket_price < 50 THEN 'Low'
+        WHEN ticket_price < 150 THEN 'Medium'
+        ELSE 'High'
+    END AS price_band
+FROM Events;
