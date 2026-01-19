@@ -1919,3 +1919,7 @@ SELECT
     city
 FROM Users
 WHERE email IS NOT NULL;
+
+
+ALTER TABLE Events
+ADD CONSTRAINT chk_ticket_price_positive CHECK (ticket_price >= 0);
