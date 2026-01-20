@@ -1936,3 +1936,6 @@ SELECT
         ELSE 'High'
     END AS price_band
 FROM Events;
+
+
+.........
