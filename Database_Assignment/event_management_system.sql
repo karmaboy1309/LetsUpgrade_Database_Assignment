@@ -1936,3 +1936,5 @@ SELECT
         ELSE 'High'
     END AS price_band
 FROM Events;
+CREATE UNIQUE INDEX uq_user_event_registration
+ON Registrations(user_id, event_id);
