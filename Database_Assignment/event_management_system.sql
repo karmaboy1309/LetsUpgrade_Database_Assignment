@@ -1938,3 +1938,15 @@ SELECT
 FROM Events;
 CREATE UNIQUE INDEX uq_user_event_registration
 ON Registrations(user_id, event_id);
+CREATE OR REPLACE VIEW EventAttendanceRateView AS
+SELECT
+    e.event_name,
+    COUNT(r.registration_id) AS total_registrations,
+    SUM(CASE WHEN r.attended = TRUE THEN 1 ELSE 0 END) AS total_attended,
+    ROUND(
+        (SUM(CASE WHEN r.attended = TRUE THEN 1 ELSE 0 END) / COUNT(r.registration_id)) * 100,
+        2
+    ) AS attendance_rate_percent
+FROM Events e
+JOIN Registrations r ON e.event_id = r.event_id
+GROUP BY e.event_name;
