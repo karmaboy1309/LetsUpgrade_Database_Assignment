@@ -1953,3 +1953,13 @@ GROUP BY e.event_name;
 ALTER TABLE Registrations
 ADD COLUMN updated_at TIMESTAMP NULL DEFAULT NULL
 ON UPDATE CURRENT_TIMESTAMP;
+CREATE OR REPLACE VIEW UserRegistrationHistory AS
+SELECT
+    u.name,
+    e.event_name,
+    r.registration_date,
+    r.attended,
+    r.feedback_rating
+FROM Users u
+JOIN Registrations r ON u.user_id = r.user_id
+JOIN Events e ON r.event_id = e.event_id;
