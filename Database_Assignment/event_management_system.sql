@@ -1950,3 +1950,6 @@ SELECT
 FROM Events e
 JOIN Registrations r ON e.event_id = r.event_id
 GROUP BY e.event_name;
+ALTER TABLE Registrations
+ADD COLUMN updated_at TIMESTAMP NULL DEFAULT NULL
+ON UPDATE CURRENT_TIMESTAMP;
