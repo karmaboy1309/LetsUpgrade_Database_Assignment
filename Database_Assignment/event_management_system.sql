@@ -1970,3 +1970,11 @@ ALTER TABLE Registrations
 ADD CONSTRAINT fk_registrations_event
 FOREIGN KEY (event_id) REFERENCES Events(event_id)
 ON DELETE CASCADE;
+CREATE OR REPLACE VIEW InactiveEventsView AS
+SELECT
+    event_id,
+    event_name,
+    category,
+    ticket_price
+FROM Events
+WHERE is_active = 0;
