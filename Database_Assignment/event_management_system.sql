@@ -1963,3 +1963,10 @@ SELECT
 FROM Users u
 JOIN Registrations r ON u.user_id = r.user_id
 JOIN Events e ON r.event_id = e.event_id;
+ALTER TABLE Registrations
+DROP FOREIGN KEY Registrations_ibfk_2;
+
+ALTER TABLE Registrations
+ADD CONSTRAINT fk_registrations_event
+FOREIGN KEY (event_id) REFERENCES Events(event_id)
+ON DELETE CASCADE;
