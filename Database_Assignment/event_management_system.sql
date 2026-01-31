@@ -1981,3 +1981,13 @@ WHERE is_active = 0;
 
 CREATE INDEX idx_registrations_user_attended
 ON Registrations(user_id, attended);
+
+CREATE OR REPLACE VIEW HighRatedEventsView AS
+SELECT
+    e.event_name,
+    ROUND(AVG(r.feedback_rating), 2) AS average_rating
+FROM Events e
+JOIN Registrations r ON e.event_id = r.event_id
+WHERE r.feedback_rating IS NOT NULL
+GROUP BY e.event_name
+HAVING AVG(r.feedback_rating) >= 9;
