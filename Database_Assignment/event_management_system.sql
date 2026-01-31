@@ -1978,3 +1978,6 @@ SELECT
     ticket_price
 FROM Events
 WHERE is_active = 0;
+
+CREATE INDEX idx_registrations_user_attended
+ON Registrations(user_id, attended);
