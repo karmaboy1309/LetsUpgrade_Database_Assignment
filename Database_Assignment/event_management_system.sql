@@ -1991,3 +1991,5 @@ JOIN Registrations r ON e.event_id = r.event_id
 WHERE r.feedback_rating IS NOT NULL
 GROUP BY e.event_name
 HAVING AVG(r.feedback_rating) >= 9;
+ALTER TABLE Events
+ADD COLUMN end_date DATE;
