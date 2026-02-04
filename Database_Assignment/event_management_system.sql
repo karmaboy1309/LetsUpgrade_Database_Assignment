@@ -1993,6 +1993,7 @@ GROUP BY e.event_name
 HAVING AVG(r.feedback_rating) >= 9;
 ALTER TABLE Events
 ADD COLUMN end_date DATE;
+
 CREATE OR REPLACE VIEW OngoingEventsView AS
 SELECT
     event_id,
@@ -2001,3 +2002,6 @@ SELECT
     ticket_price
 FROM Events
 WHERE end_date IS NULL OR end_date >= CURDATE();
+
+
+
