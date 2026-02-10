@@ -2,6 +2,7 @@
 -- EVENT MANAGEMENT SYSTEM DATABASE SETUP AND QUERIES
 -- =======================================================
 
+
 -- 1. Create Tables (Schema Definition)
 -------------------------------------------------------
 
