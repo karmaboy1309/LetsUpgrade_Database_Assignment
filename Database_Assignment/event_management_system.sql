@@ -2006,4 +2006,12 @@ WHERE end_date IS NULL OR end_date >= CURDATE();
 ALTER TABLE Events
 ADD COLUMN capacity INT DEFAULT 0;
 
-
+CREATE OR REPLACE VIEW EventsNearCapacityView AS
+SELECT
+    e.event_name,
+    e.capacity,
+    COUNT(r.registration_id) AS total_registrations
+FROM Events e
+LEFT JOIN Registrations r ON e.event_id = r.event_id
+GROUP BY e.event_id, e.event_name, e.capacity
+HAVING COUNT(r.registration_id) >= e.capacity * 0.8;
