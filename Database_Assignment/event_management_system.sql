@@ -2003,5 +2003,7 @@ SELECT
 FROM Events
 WHERE end_date IS NULL OR end_date >= CURDATE();
 
+ALTER TABLE Events
+ADD COLUMN capacity INT DEFAULT 0;
 
 
