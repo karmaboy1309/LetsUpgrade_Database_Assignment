@@ -2017,3 +2017,10 @@ GROUP BY e.event_id, e.event_name, e.capacity
 HAVING COUNT(r.registration_id) >= e.capacity * 0.8;
 ALTER TABLE Events
 ADD COLUMN location VARCHAR(150);
+CREATE OR REPLACE VIEW EventsByLocationView AS
+SELECT
+    location,
+    COUNT(event_id) AS total_events
+FROM Events
+WHERE location IS NOT NULL
+GROUP BY location;
