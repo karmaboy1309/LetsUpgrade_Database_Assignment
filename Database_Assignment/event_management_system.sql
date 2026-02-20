@@ -2015,3 +2015,5 @@ FROM Events e
 LEFT JOIN Registrations r ON e.event_id = r.event_id
 GROUP BY e.event_id, e.event_name, e.capacity
 HAVING COUNT(r.registration_id) >= e.capacity * 0.8;
+ALTER TABLE Events
+ADD COLUMN location VARCHAR(150);
