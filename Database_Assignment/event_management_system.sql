@@ -2027,3 +2027,12 @@ GROUP BY location;
 
 ALTER TABLE Events
 ADD COLUMN status VARCHAR(50) DEFAULT 'Scheduled';
+
+CREATE OR REPLACE VIEW CancelledEventsView AS
+SELECT
+    event_id,
+    event_name,
+    category,
+    ticket_price
+FROM Events
+WHERE status = 'Cancelled';
