@@ -2024,3 +2024,6 @@ SELECT
 FROM Events
 WHERE location IS NOT NULL
 GROUP BY location;
+
+ALTER TABLE Events
+ADD COLUMN status VARCHAR(50) DEFAULT 'Scheduled';
