@@ -2036,3 +2036,6 @@ SELECT
     ticket_price
 FROM Events
 WHERE status = 'Cancelled';
+
+ALTER TABLE Events
+ADD CONSTRAINT chk_capacity_non_negative CHECK (capacity >= 0);
