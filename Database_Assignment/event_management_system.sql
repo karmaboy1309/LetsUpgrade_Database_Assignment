@@ -2039,3 +2039,11 @@ WHERE status = 'Cancelled';
 
 ALTER TABLE Events
 ADD CONSTRAINT chk_capacity_non_negative CHECK (capacity >= 0);
+
+CREATE OR REPLACE VIEW FreeEventsView AS
+SELECT
+    event_id,
+    event_name,
+    category
+FROM Events
+WHERE ticket_price = 0;
