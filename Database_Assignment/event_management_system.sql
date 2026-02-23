@@ -2050,3 +2050,11 @@ WHERE ticket_price = 0;
 
 ALTER TABLE Events
 ADD COLUMN min_age INT DEFAULT 0;
+CREATE OR REPLACE VIEW AgeRestrictedEventsView AS
+SELECT
+    event_id,
+    event_name,
+    category,
+    min_age
+FROM Events
+WHERE min_age > 0;
