@@ -2047,3 +2047,6 @@ SELECT
     category
 FROM Events
 WHERE ticket_price = 0;
+
+ALTER TABLE Events
+ADD COLUMN min_age INT DEFAULT 0;
