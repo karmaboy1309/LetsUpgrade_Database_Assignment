@@ -2059,3 +2059,11 @@ FROM Events
 WHERE min_age > 0;
 ALTER TABLE Registrations
 ADD COLUMN status VARCHAR(50) DEFAULT 'Confirmed';
+CREATE OR REPLACE VIEW PendingRegistrationsView AS
+SELECT
+    registration_id,
+    user_id,
+    event_id,
+    registration_date
+FROM Registrations
+WHERE status = 'Pending';
