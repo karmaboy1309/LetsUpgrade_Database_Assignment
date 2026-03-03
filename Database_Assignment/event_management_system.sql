@@ -2057,3 +2057,5 @@ SELECT
     min_age
 FROM Events
 WHERE min_age > 0;
+ALTER TABLE Registrations
+ADD COLUMN status VARCHAR(50) DEFAULT 'Confirmed';
