@@ -2068,3 +2068,25 @@ SELECT
     registration_date
 FROM Registrations
 WHERE status = 'Pending';
+
+-- ==============================
+-- ATTENDEE TABLE
+-- ==============================
+CREATE TABLE attendees (
+    attendee_id INT PRIMARY KEY AUTO_INCREMENT,
+    name VARCHAR(100),
+    email VARCHAR(100) UNIQUE,
+    phone VARCHAR(15)
+);
+
+-- ==============================
+-- EVENT REGISTRATION TABLE (Many-to-Many)
+-- ==============================
+CREATE TABLE event_registrations (
+    registration_id INT PRIMARY KEY AUTO_INCREMENT,
+    event_id INT,
+    attendee_id INT,
+    registration_date DATE,
+    FOREIGN KEY (event_id) REFERENCES events(event_id),
+    FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id)
+);
