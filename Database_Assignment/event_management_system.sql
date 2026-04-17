@@ -2090,3 +2090,30 @@ CREATE TABLE event_registrations (
     FOREIGN KEY (event_id) REFERENCES events(event_id),
     FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id)
 );
+
+
+-- ==============================
+-- USEFUL QUERIES
+-- ==============================
+
+-- 1. Get all events with venue details
+SELECT e.event_name, v.venue_name, e.event_date
+FROM events e
+JOIN venues v ON e.venue_id = v.venue_id;
+
+-- 2. Count number of attendees per event
+SELECT e.event_name, COUNT(r.attendee_id) AS total_attendees
+FROM events e
+LEFT JOIN event_registrations r ON e.event_id = r.event_id
+GROUP BY e.event_name;
+
+-- 3. Get upcoming events
+SELECT * 
+FROM events
+WHERE event_date >= CURDATE();
+
+-- 4. Get attendees for a specific event
+SELECT a.name, a.email
+FROM attendees a
+JOIN event_registrations r ON a.attendee_id = r.attendee_id
+WHERE r.event_id = 1;
