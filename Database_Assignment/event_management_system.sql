@@ -2122,3 +2122,8 @@ WHERE r.event_id = 1;
 -- Add index for faster event search by date
 CREATE INDEX idx_event_date
 ON events(event_date);
+
+
+-- Set default status for events
+ALTER TABLE events
+ADD status VARCHAR(20) DEFAULT 'Upcoming';
