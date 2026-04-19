@@ -2117,3 +2117,8 @@ SELECT a.name, a.email
 FROM attendees a
 JOIN event_registrations r ON a.attendee_id = r.attendee_id
 WHERE r.event_id = 1;
+
+
+-- Add index for faster event search by date
+CREATE INDEX idx_event_date
+ON events(event_date);
