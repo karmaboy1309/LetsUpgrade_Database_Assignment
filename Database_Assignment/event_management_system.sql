@@ -2127,3 +2127,7 @@ ON events(event_date);
 -- Set default status for events
 ALTER TABLE events
 ADD status VARCHAR(20) DEFAULT 'Upcoming';
+-- Add constraint to ensure valid email format
+ALTER TABLE attendees
+ADD CONSTRAINT chk_email
+CHECK (email LIKE '%@%.%');
