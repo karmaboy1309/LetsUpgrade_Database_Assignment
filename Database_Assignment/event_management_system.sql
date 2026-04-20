@@ -2131,3 +2131,14 @@ ADD status VARCHAR(20) DEFAULT 'Upcoming';
 ALTER TABLE attendees
 ADD CONSTRAINT chk_email
 CHECK (email LIKE '%@%.%');
+-- Insert sample events
+INSERT INTO events (event_name, event_date, venue_id)
+VALUES 
+('Tech Conference', '2026-06-10', 1),
+('Music Fest', '2026-07-15', 2);
+
+-- Insert sample attendees
+INSERT INTO attendees (name, email, phone)
+VALUES
+('Rahul Sharma', 'rahul@gmail.com', '9876543210'),
+('Priya Patel', 'priya@gmail.com', '9123456780');
