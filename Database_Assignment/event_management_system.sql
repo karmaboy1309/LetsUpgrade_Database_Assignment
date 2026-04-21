@@ -2142,3 +2142,6 @@ INSERT INTO attendees (name, email, phone)
 VALUES
 ('Rahul Sharma', 'rahul@gmail.com', '9876543210'),
 ('Priya Patel', 'priya@gmail.com', '9123456780');
+-- Ensure event name is always provided
+ALTER TABLE events
+MODIFY event_name VARCHAR(100) NOT NULL;
