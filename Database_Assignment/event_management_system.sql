@@ -2145,3 +2145,7 @@ VALUES
 -- Ensure event name is always provided
 ALTER TABLE events
 MODIFY event_name VARCHAR(100) NOT NULL;
+-- Get latest events first
+SELECT *
+FROM events
+ORDER BY event_date DESC;
