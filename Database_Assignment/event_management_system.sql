@@ -2152,3 +2152,10 @@ ORDER BY event_date DESC;
 -- Ensure event names are unique
 ALTER TABLE events
 ADD CONSTRAINT unique_event_name UNIQUE (event_name);
+
+
+
+-- Get only upcoming events
+SELECT *
+FROM events
+WHERE status = 'Upcoming';
