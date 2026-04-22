@@ -2149,3 +2149,6 @@ MODIFY event_name VARCHAR(100) NOT NULL;
 SELECT *
 FROM events
 ORDER BY event_date DESC;
+-- Ensure event names are unique
+ALTER TABLE events
+ADD CONSTRAINT unique_event_name UNIQUE (event_name);
