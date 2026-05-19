@@ -2163,3 +2163,7 @@ WHERE status = 'Upcoming';
 -- Add category column to events table
 ALTER TABLE events
 ADD category VARCHAR(50);
+-- Fetch all technical events
+SELECT *
+FROM events
+WHERE category = 'Technical';
