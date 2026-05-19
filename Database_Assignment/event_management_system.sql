@@ -2159,3 +2159,7 @@ ADD CONSTRAINT unique_event_name UNIQUE (event_name);
 SELECT *
 FROM events
 WHERE status = 'Upcoming';
+
+-- Add category column to events table
+ALTER TABLE events
+ADD category VARCHAR(50);
