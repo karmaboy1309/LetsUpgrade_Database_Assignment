@@ -2184,3 +2184,25 @@ CREATE TABLE feedback (
     FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id),
     FOREIGN KEY (event_id) REFERENCES events(event_id)
 );
+-- ==============================
+-- REVENUE ANALYTICS QUERIES
+-- ==============================
+
+-- Calculate total registrations per event
+SELECT 
+    e.event_name,
+    COUNT(r.registration_id) AS total_registrations
+FROM events e
+LEFT JOIN event_registrations r
+ON e.event_id = r.event_id
+GROUP BY e.event_name;
+
+-- Display events with highest registrations
+SELECT 
+    e.event_name,
+    COUNT(r.registration_id) AS registrations
+FROM events e
+JOIN event_registrations r
+ON e.event_id = r.event_id
+GROUP BY e.event_name
+ORDER BY registrations DESC;
