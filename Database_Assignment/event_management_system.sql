@@ -2167,3 +2167,20 @@ ADD category VARCHAR(50);
 SELECT *
 FROM events
 WHERE category = 'Technical';
+
+
+-- ==============================
+-- FEEDBACK TABLE
+-- ==============================
+
+CREATE TABLE feedback (
+    feedback_id INT PRIMARY KEY AUTO_INCREMENT,
+    attendee_id INT,
+    event_id INT,
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    comments TEXT,
+    feedback_date DATE DEFAULT (CURRENT_DATE),
+
+    FOREIGN KEY (attendee_id) REFERENCES attendees(attendee_id),
+    FOREIGN KEY (event_id) REFERENCES events(event_id)
+);
