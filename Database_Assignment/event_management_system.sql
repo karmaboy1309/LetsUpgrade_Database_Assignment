@@ -2206,3 +2206,21 @@ JOIN event_registrations r
 ON e.event_id = r.event_id
 GROUP BY e.event_name
 ORDER BY registrations DESC;
+
+
+-- ==============================
+-- ORGANIZERS TABLE
+-- ==============================
+
+CREATE TABLE organizers (
+    organizer_id INT PRIMARY KEY AUTO_INCREMENT,
+    organizer_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    phone VARCHAR(15)
+);
+
+-- Add organizer reference in events table
+ALTER TABLE events
+ADD organizer_id INT,
+ADD FOREIGN KEY (organizer_id)
+REFERENCES organizers(organizer_id);
