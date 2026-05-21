@@ -2224,3 +2224,25 @@ ALTER TABLE events
 ADD organizer_id INT,
 ADD FOREIGN KEY (organizer_id)
 REFERENCES organizers(organizer_id);
+-- ==============================
+-- ATTENDANCE ANALYTICS
+-- ==============================
+
+-- Get attendee count for each event
+SELECT 
+    e.event_name,
+    COUNT(r.attendee_id) AS attendee_count
+FROM events e
+LEFT JOIN event_registrations r
+ON e.event_id = r.event_id
+GROUP BY e.event_name;
+
+-- Find events with more than 5 attendees
+SELECT 
+    e.event_name,
+    COUNT(r.attendee_id) AS total_attendees
+FROM events e
+JOIN event_registrations r
+ON e.event_id = r.event_id
+GROUP BY e.event_name
+HAVING total_attendees > 5;
