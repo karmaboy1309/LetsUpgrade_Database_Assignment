@@ -2246,3 +2246,13 @@ JOIN event_registrations r
 ON e.event_id = r.event_id
 GROUP BY e.event_name
 HAVING total_attendees > 5;
+
+
+-- ==============================
+-- UPDATE EVENT STATUS
+-- ==============================
+
+-- Mark completed events
+UPDATE events
+SET status = 'Completed'
+WHERE event_date < CURDATE();
