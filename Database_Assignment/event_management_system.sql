@@ -2256,3 +2256,17 @@ HAVING total_attendees > 5;
 UPDATE events
 SET status = 'Completed'
 WHERE event_date < CURDATE();
+
+-- ==============================
+-- EVENT RATING ANALYTICS
+-- ==============================
+
+-- Get average rating for each event
+SELECT 
+    e.event_name,
+    ROUND(AVG(f.rating), 2) AS average_rating
+FROM events e
+LEFT JOIN feedback f
+ON e.event_id = f.event_id
+GROUP BY e.event_name
+ORDER BY average_rating DESC;
