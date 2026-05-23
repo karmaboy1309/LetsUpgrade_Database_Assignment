@@ -2275,3 +2275,16 @@ ORDER BY average_rating DESC;
 ALTER TABLE events
 ADD CONSTRAINT chk_event_capacity
 CHECK (max_capacity > 0);
+-- ==============================
+-- TOP RATED EVENTS
+-- ==============================
+
+SELECT 
+    e.event_name,
+    ROUND(AVG(f.rating), 2) AS avg_rating
+FROM events e
+JOIN feedback f
+ON e.event_id = f.event_id
+GROUP BY e.event_name
+HAVING avg_rating >= 4
+ORDER BY avg_rating DESC;
