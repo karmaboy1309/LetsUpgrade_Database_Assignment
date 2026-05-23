@@ -2270,3 +2270,8 @@ LEFT JOIN feedback f
 ON e.event_id = f.event_id
 GROUP BY e.event_name
 ORDER BY average_rating DESC;
+
+-- Ensure event capacity is greater than 0
+ALTER TABLE events
+ADD CONSTRAINT chk_event_capacity
+CHECK (max_capacity > 0);
