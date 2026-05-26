@@ -2288,3 +2288,27 @@ ON e.event_id = f.event_id
 GROUP BY e.event_name
 HAVING avg_rating >= 4
 ORDER BY avg_rating DESC;
+
+
+-- ==============================
+-- REFUND MANAGEMENT SYSTEM
+-- ==============================
+
+CREATE TABLE refunds (
+    refund_id INT PRIMARY KEY AUTO_INCREMENT,
+    registration_id INT NOT NULL,
+    refund_amount DECIMAL(10,2) NOT NULL,
+    refund_reason VARCHAR(255),
+    refund_status VARCHAR(20) DEFAULT 'Pending',
+    refund_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (registration_id)
+    REFERENCES event_registrations(registration_id)
+);
+
+-- Sample refund records
+INSERT INTO refunds 
+(registration_id, refund_amount, refund_reason, refund_status)
+VALUES
+(1, 500.00, 'Event cancelled', 'Completed'),
+(2, 250.00, 'User unavailable', 'Pending');
