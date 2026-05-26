@@ -2312,3 +2312,20 @@ INSERT INTO refunds
 VALUES
 (1, 500.00, 'Event cancelled', 'Completed'),
 (2, 250.00, 'User unavailable', 'Pending');
+-- ==============================
+-- EVENT REVENUE ANALYTICS VIEW
+-- ==============================
+
+CREATE VIEW EventRevenueView AS
+SELECT 
+    e.event_id,
+    e.event_name,
+    COUNT(r.registration_id) AS total_registrations,
+    COUNT(r.registration_id) * 1000 AS estimated_revenue
+FROM events e
+LEFT JOIN event_registrations r
+ON e.event_id = r.event_id
+GROUP BY e.event_id, e.event_name;
+
+-- View revenue analytics
+SELECT * FROM EventRevenueView;
