@@ -2329,3 +2329,27 @@ GROUP BY e.event_id, e.event_name;
 
 -- View revenue analytics
 SELECT * FROM EventRevenueView;
+
+
+-- ==============================
+-- WAITLIST MANAGEMENT SYSTEM
+-- ==============================
+
+CREATE TABLE waitlist (
+    waitlist_id INT PRIMARY KEY AUTO_INCREMENT,
+    attendee_id INT NOT NULL,
+    event_id INT NOT NULL,
+    waitlist_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (attendee_id)
+    REFERENCES attendees(attendee_id),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample waitlist data
+INSERT INTO waitlist (attendee_id, event_id)
+VALUES
+(1, 2),
+(2, 2);
