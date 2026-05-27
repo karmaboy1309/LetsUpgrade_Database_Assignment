@@ -2353,3 +2353,21 @@ INSERT INTO waitlist (attendee_id, event_id)
 VALUES
 (1, 2),
 (2, 2);
+-- ==============================
+-- ORGANIZER PERFORMANCE ANALYTICS
+-- ==============================
+
+CREATE VIEW OrganizerPerformanceView AS
+SELECT
+    o.organizer_name,
+    COUNT(e.event_id) AS total_events,
+    COUNT(r.registration_id) AS total_registrations
+FROM organizers o
+LEFT JOIN events e
+ON o.organizer_id = e.organizer_id
+LEFT JOIN event_registrations r
+ON e.event_id = r.event_id
+GROUP BY o.organizer_name;
+
+-- View organizer performance
+SELECT * FROM OrganizerPerformanceView;
