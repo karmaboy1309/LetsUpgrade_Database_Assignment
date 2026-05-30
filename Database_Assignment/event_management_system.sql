@@ -2371,3 +2371,34 @@ GROUP BY o.organizer_name;
 
 -- View organizer performance
 SELECT * FROM OrganizerPerformanceView;
+
+-- ==============================
+-- USER BADGE SYSTEM
+-- ==============================
+
+CREATE TABLE user_badges (
+    badge_id INT PRIMARY KEY AUTO_INCREMENT,
+    attendee_id INT NOT NULL,
+    badge_name VARCHAR(50) NOT NULL,
+    awarded_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (attendee_id)
+    REFERENCES attendees(attendee_id)
+);
+
+-- Sample badges
+INSERT INTO user_badges (attendee_id, badge_name)
+VALUES
+(1, 'Bronze Attendee'),
+(2, 'Silver Attendee');
+
+-- Badge Analytics View
+CREATE VIEW UserBadgeView AS
+SELECT
+    a.attendee_id,
+    a.name,
+    ub.badge_name,
+    ub.awarded_date
+FROM attendees a
+JOIN user_badges ub
+ON a.attendee_id = ub.attendee_id;
