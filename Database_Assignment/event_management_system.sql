@@ -2402,3 +2402,29 @@ SELECT
 FROM attendees a
 JOIN user_badges ub
 ON a.attendee_id = ub.attendee_id;
+
+-- ==============================
+-- EVENT HISTORY TRACKING
+-- ==============================
+
+CREATE TABLE event_history (
+    history_id INT PRIMARY KEY AUTO_INCREMENT,
+    event_id INT,
+    event_name VARCHAR(100),
+    event_date DATE,
+    modified_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    action_type VARCHAR(20),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample history records
+INSERT INTO event_history
+(event_id, event_name, event_date, action_type)
+VALUES
+(1, 'Tech Conference', '2026-06-10', 'UPDATED'),
+(2, 'Music Fest', '2026-07-15', 'CREATED');
+
+-- View event history
+SELECT * FROM event_history;
