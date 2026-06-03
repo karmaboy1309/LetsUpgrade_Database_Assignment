@@ -2428,3 +2428,30 @@ VALUES
 
 -- View event history
 SELECT * FROM event_history;
+
+
+-- ==============================
+-- ORGANIZER PAYOUT SYSTEM
+-- ==============================
+
+CREATE TABLE organizer_payouts (
+    payout_id INT PRIMARY KEY AUTO_INCREMENT,
+    organizer_id INT NOT NULL,
+    event_id INT NOT NULL,
+    total_revenue DECIMAL(10,2),
+    commission_percentage DECIMAL(5,2),
+    payout_amount DECIMAL(10,2),
+    payout_date DATE,
+
+    FOREIGN KEY (organizer_id)
+    REFERENCES organizers(organizer_id),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample payout records
+INSERT INTO organizer_payouts
+(organizer_id, event_id, total_revenue, commission_percentage, payout_amount, payout_date)
+VALUES
+(1, 1, 50000.00, 10.00, 45000.00, CURDATE());
