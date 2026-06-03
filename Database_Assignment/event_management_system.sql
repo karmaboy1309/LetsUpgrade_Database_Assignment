@@ -2455,3 +2455,22 @@ INSERT INTO organizer_payouts
 (organizer_id, event_id, total_revenue, commission_percentage, payout_amount, payout_date)
 VALUES
 (1, 1, 50000.00, 10.00, 45000.00, CURDATE());
+
+
+-- ==============================
+-- EVENT RECOMMENDATION VIEW
+-- ==============================
+
+CREATE VIEW UserEventRecommendations AS
+SELECT
+    a.attendee_id,
+    a.name,
+    e.event_name,
+    e.category,
+    e.event_date
+FROM attendees a
+CROSS JOIN events e
+WHERE e.status = 'Upcoming';
+
+-- View recommendations
+SELECT * FROM UserEventRecommendations;
