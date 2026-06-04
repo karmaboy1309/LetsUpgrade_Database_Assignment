@@ -2474,3 +2474,25 @@ WHERE e.status = 'Upcoming';
 
 -- View recommendations
 SELECT * FROM UserEventRecommendations;
+
+-- ==============================
+-- PRICE HISTORY TRACKING
+-- ==============================
+
+CREATE TABLE price_history (
+    history_id INT PRIMARY KEY AUTO_INCREMENT,
+    event_id INT NOT NULL,
+    old_price DECIMAL(10,2),
+    new_price DECIMAL(10,2),
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample records
+INSERT INTO price_history
+(event_id, old_price, new_price)
+VALUES
+(1, 999.00, 1199.00),
+(2, 499.00, 599.00);
