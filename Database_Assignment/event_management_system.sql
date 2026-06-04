@@ -2495,4 +2495,29 @@ INSERT INTO price_history
 (event_id, old_price, new_price)
 VALUES
 (1, 999.00, 1199.00),
-(2, 499.00, 599.00);
+(2, 499.00, 599.00);.
+
+
+    -- ==============================
+-- EVENT SUMMARY PROCEDURE
+-- ==============================
+
+DELIMITER $$
+
+CREATE PROCEDURE GetEventSummary(IN p_event_id INT)
+BEGIN
+    SELECT
+        e.event_name,
+        e.event_date,
+        COUNT(r.registration_id) AS total_registrations
+    FROM events e
+    LEFT JOIN event_registrations r
+        ON e.event_id = r.event_id
+    WHERE e.event_id = p_event_id
+    GROUP BY e.event_id;
+END$$
+
+DELIMITER ;
+
+-- Example Usage:
+-- CALL GetEventSummary(1);
