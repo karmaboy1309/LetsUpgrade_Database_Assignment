@@ -2521,3 +2521,28 @@ DELIMITER ;
 
 -- Example Usage:
 -- CALL GetEventSummary(1);
+
+-- ==============================
+-- FRAUD DETECTION SYSTEM
+-- ==============================
+
+CREATE TABLE fraud_flags (
+    flag_id INT PRIMARY KEY AUTO_INCREMENT,
+    attendee_id INT NOT NULL,
+    event_id INT NOT NULL,
+    reason VARCHAR(255),
+    flagged_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (attendee_id)
+    REFERENCES attendees(attendee_id),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample Fraud Records
+INSERT INTO fraud_flags
+(attendee_id, event_id, reason)
+VALUES
+(1, 1, 'Multiple registrations from same user'),
+(2, 2, 'Suspicious booking activity');
