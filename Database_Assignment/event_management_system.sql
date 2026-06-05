@@ -2546,3 +2546,25 @@ INSERT INTO fraud_flags
 VALUES
 (1, 1, 'Multiple registrations from same user'),
 (2, 2, 'Suspicious booking activity');
+
+
+-- ==============================
+-- ORGANIZER REVENUE DASHBOARD
+-- ==============================
+
+CREATE VIEW OrganizerRevenueView AS
+SELECT
+    o.organizer_id,
+    o.organizer_name,
+    COUNT(DISTINCT e.event_id) AS total_events,
+    SUM(op.total_revenue) AS total_revenue,
+    SUM(op.payout_amount) AS total_payout
+FROM organizers o
+LEFT JOIN organizer_payouts op
+    ON o.organizer_id = op.organizer_id
+LEFT JOIN events e
+    ON o.organizer_id = e.organizer_id
+GROUP BY o.organizer_id, o.organizer_name;
+
+-- View Dashboard
+SELECT * FROM OrganizerRevenueView;
