@@ -2629,3 +2629,20 @@ DELIMITER ;
 
 -- Example:
 -- CALL UpdateEventPrices();
+-- ==============================
+-- EVENT POPULARITY RANKING
+-- ==============================
+
+CREATE VIEW EventPopularityView AS
+SELECT
+    e.event_id,
+    e.event_name,
+    COUNT(r.registration_id) AS registration_count
+FROM events e
+LEFT JOIN event_registrations r
+    ON e.event_id = r.event_id
+GROUP BY e.event_id, e.event_name
+ORDER BY registration_count DESC;
+
+-- View ranking
+SELECT * FROM EventPopularityView;
