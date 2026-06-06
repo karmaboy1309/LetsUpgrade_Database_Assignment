@@ -2592,3 +2592,19 @@ INSERT INTO spam_registrations
 (attendee_id, event_id, detected_reason)
 VALUES
 (1, 1, 'Duplicate registration attempt');
+-- ==============================
+-- USER ATTENDANCE ANALYTICS VIEW
+-- ==============================
+
+CREATE VIEW UserAttendanceView AS
+SELECT
+    a.attendee_id,
+    a.name,
+    COUNT(r.registration_id) AS total_events_attended
+FROM attendees a
+LEFT JOIN event_registrations r
+    ON a.attendee_id = r.attendee_id
+GROUP BY a.attendee_id, a.name;
+
+-- View attendance analytics
+SELECT * FROM UserAttendanceView;
