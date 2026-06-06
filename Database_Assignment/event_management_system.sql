@@ -2608,3 +2608,24 @@ GROUP BY a.attendee_id, a.name;
 
 -- View attendance analytics
 SELECT * FROM UserAttendanceView;
+-- ==============================
+-- DYNAMIC PRICING ENGINE
+-- ==============================
+
+DELIMITER $$
+
+CREATE PROCEDURE UpdateEventPrices()
+BEGIN
+    UPDATE events e
+    SET ticket_price = ticket_price * 1.10
+    WHERE (
+        SELECT COUNT(*)
+        FROM event_registrations r
+        WHERE r.event_id = e.event_id
+    ) >= 50;
+END$$
+
+DELIMITER ;
+
+-- Example:
+-- CALL UpdateEventPrices();
