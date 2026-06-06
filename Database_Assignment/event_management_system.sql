@@ -2568,3 +2568,27 @@ GROUP BY o.organizer_id, o.organizer_name;
 
 -- View Dashboard
 SELECT * FROM OrganizerRevenueView;
+
+-- ==============================
+-- SPAM REGISTRATION TRACKING
+-- ==============================
+
+CREATE TABLE spam_registrations (
+    spam_id INT PRIMARY KEY AUTO_INCREMENT,
+    attendee_id INT NOT NULL,
+    event_id INT NOT NULL,
+    detected_reason VARCHAR(255),
+    detected_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (attendee_id)
+    REFERENCES attendees(attendee_id),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample data
+INSERT INTO spam_registrations
+(attendee_id, event_id, detected_reason)
+VALUES
+(1, 1, 'Duplicate registration attempt');
