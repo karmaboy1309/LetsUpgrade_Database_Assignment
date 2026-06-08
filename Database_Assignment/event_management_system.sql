@@ -2672,3 +2672,21 @@ BEGIN
 END$$
 
 DELIMITER ;
+-- ==============================
+-- SMART EVENT RECOMMENDATIONS
+-- ==============================
+
+CREATE VIEW SmartEventRecommendations AS
+SELECT DISTINCT
+    a.attendee_id,
+    a.name,
+    e.event_name,
+    e.category
+FROM attendees a
+JOIN event_registrations r
+    ON a.attendee_id = r.attendee_id
+JOIN events prev_event
+    ON r.event_id = prev_event.event_id
+JOIN events e
+    ON e.category = prev_event.category
+WHERE e.status = 'Upcoming';
