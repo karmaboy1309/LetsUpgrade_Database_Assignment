@@ -2646,3 +2646,29 @@ ORDER BY registration_count DESC;
 
 -- View ranking
 SELECT * FROM EventPopularityView;
+
+-- ==============================
+-- EVENT UPDATE AUDIT TRIGGER
+-- ==============================
+
+DELIMITER $$
+
+CREATE TRIGGER LogEventUpdate
+AFTER UPDATE ON events
+FOR EACH ROW
+BEGIN
+    INSERT INTO event_history (
+        event_id,
+        event_name,
+        event_date,
+        action_type
+    )
+    VALUES (
+        OLD.event_id,
+        OLD.event_name,
+        OLD.event_date,
+        'UPDATED'
+    );
+END$$
+
+DELIMITER ;
