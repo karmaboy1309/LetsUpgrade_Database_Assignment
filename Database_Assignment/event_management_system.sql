@@ -2712,3 +2712,23 @@ INSERT INTO notifications
 VALUES
 (1, 'Your registration has been confirmed.', 'Registration'),
 (2, 'Event schedule has been updated.', 'Event Update');
+-- ==============================
+-- EVENT CANCELLATION TRACKING
+-- ==============================
+
+CREATE TABLE cancelled_events (
+    cancellation_id INT PRIMARY KEY AUTO_INCREMENT,
+    event_id INT NOT NULL,
+    cancellation_reason VARCHAR(255),
+    cancelled_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample Data
+INSERT INTO cancelled_events
+(event_id, cancellation_reason)
+VALUES
+(1, 'Low registrations'),
+(2, 'Venue unavailable');
