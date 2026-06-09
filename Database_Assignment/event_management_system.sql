@@ -2732,3 +2732,25 @@ INSERT INTO cancelled_events
 VALUES
 (1, 'Low registrations'),
 (2, 'Venue unavailable');
+-- ==============================
+-- ORGANIZER STATISTICS DASHBOARD
+-- ==============================
+
+CREATE VIEW OrganizerStatsView AS
+SELECT
+    o.organizer_id,
+    o.organizer_name,
+    COUNT(DISTINCT e.event_id) AS total_events,
+    COUNT(r.registration_id) AS total_registrations,
+    ROUND(AVG(f.rating), 2) AS average_rating
+FROM organizers o
+LEFT JOIN events e
+    ON o.organizer_id = e.organizer_id
+LEFT JOIN event_registrations r
+    ON e.event_id = r.event_id
+LEFT JOIN feedback f
+    ON e.event_id = f.event_id
+GROUP BY o.organizer_id, o.organizer_name;
+
+-- View Statistics
+SELECT * FROM OrganizerStatsView;
