@@ -2690,3 +2690,25 @@ JOIN events prev_event
 JOIN events e
     ON e.category = prev_event.category
 WHERE e.status = 'Upcoming';
+-- ==============================
+-- USER NOTIFICATIONS
+-- ==============================
+
+CREATE TABLE notifications (
+    notification_id INT PRIMARY KEY AUTO_INCREMENT,
+    attendee_id INT NOT NULL,
+    message VARCHAR(255) NOT NULL,
+    notification_type VARCHAR(50),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    is_read BOOLEAN DEFAULT FALSE,
+
+    FOREIGN KEY (attendee_id)
+    REFERENCES attendees(attendee_id)
+);
+
+-- Sample Notifications
+INSERT INTO notifications
+(attendee_id, message, notification_type)
+VALUES
+(1, 'Your registration has been confirmed.', 'Registration'),
+(2, 'Event schedule has been updated.', 'Event Update');
