@@ -2780,3 +2780,21 @@ BEGIN
 END$$
 
 DELIMITER ;
+-- ==============================
+-- REFUND ANALYTICS DASHBOARD
+-- ==============================
+
+CREATE VIEW RefundAnalytics AS
+SELECT
+    e.event_name,
+    COUNT(rf.refund_id) AS total_refunds,
+    SUM(rf.refund_amount) AS total_refund_amount
+FROM refunds rf
+JOIN event_registrations er
+    ON rf.registration_id = er.registration_id
+JOIN events e
+    ON er.event_id = e.event_id
+GROUP BY e.event_name;
+
+-- View Refund Statistics
+SELECT * FROM RefundAnalytics;
