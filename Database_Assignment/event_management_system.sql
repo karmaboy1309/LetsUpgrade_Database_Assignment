@@ -2754,3 +2754,29 @@ GROUP BY o.organizer_id, o.organizer_name;
 
 -- View Statistics
 SELECT * FROM OrganizerStatsView;
+
+-- ==============================
+-- FRAUD DETECTION TRIGGER
+-- ==============================
+
+DELIMITER $$
+
+CREATE TRIGGER FraudScanOnRegistration
+AFTER INSERT ON event_registrations
+FOR EACH ROW
+BEGIN
+    IF NEW.attendee_id < 5 THEN
+        INSERT INTO fraud_flags (
+            attendee_id,
+            event_id,
+            reason
+        )
+        VALUES (
+            NEW.attendee_id,
+            NEW.event_id,
+            'Suspicious registration pattern detected'
+        );
+    END IF;
+END$$
+
+DELIMITER ;
