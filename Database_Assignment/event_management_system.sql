@@ -2798,3 +2798,24 @@ GROUP BY e.event_name;
 
 -- View Refund Statistics
 SELECT * FROM RefundAnalytics;
+-- ==============================
+-- USER ACHIEVEMENT LEVEL VIEW
+-- ==============================
+
+CREATE VIEW UserAchievementLevels AS
+SELECT
+    a.attendee_id,
+    a.name,
+    COUNT(r.registration_id) AS total_registrations,
+    CASE
+        WHEN COUNT(r.registration_id) >= 10 THEN 'Gold'
+        WHEN COUNT(r.registration_id) >= 5 THEN 'Silver'
+        ELSE 'Bronze'
+    END AS achievement_level
+FROM attendees a
+LEFT JOIN event_registrations r
+    ON a.attendee_id = r.attendee_id
+GROUP BY a.attendee_id, a.name;
+
+-- View Achievement Levels
+SELECT * FROM UserAchievementLevels;
