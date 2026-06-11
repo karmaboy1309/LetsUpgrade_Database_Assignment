@@ -2819,3 +2819,17 @@ GROUP BY a.attendee_id, a.name;
 
 -- View Achievement Levels
 SELECT * FROM UserAchievementLevels;
+-- ==============================
+-- EVENT CATEGORY PERFORMANCE
+-- ==============================
+
+CREATE VIEW EventCategoryPerformance AS
+SELECT
+    category,
+    COUNT(event_id) AS total_events,
+    AVG(ticket_price) AS average_ticket_price
+FROM events
+GROUP BY category;
+
+-- View Category Analytics
+SELECT * FROM EventCategoryPerformance;
