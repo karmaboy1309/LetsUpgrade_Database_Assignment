@@ -2862,3 +2862,24 @@ INSERT INTO sponsors
 VALUES
 ('TechCorp', 'Technology', 50000.00),
 ('EventHub', 'Marketing', 25000.00);
+-- ==============================
+-- EVENT CAPACITY MONITORING
+-- ==============================
+
+CREATE VIEW EventCapacityDashboard AS
+SELECT
+    e.event_id,
+    e.event_name,
+    e.max_capacity,
+    COUNT(r.registration_id) AS registered_users,
+    (e.max_capacity - COUNT(r.registration_id)) AS remaining_slots
+FROM events e
+LEFT JOIN event_registrations r
+    ON e.event_id = r.event_id
+GROUP BY
+    e.event_id,
+    e.event_name,
+    e.max_capacity;
+
+-- View Capacity Status
+SELECT * FROM EventCapacityDashboard;
