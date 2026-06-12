@@ -2833,3 +2833,32 @@ GROUP BY category;
 
 -- View Category Analytics
 SELECT * FROM EventCategoryPerformance;
+-- ==============================
+-- EVENT SPONSOR MANAGEMENT
+-- ==============================
+
+CREATE TABLE sponsors (
+    sponsor_id INT PRIMARY KEY AUTO_INCREMENT,
+    sponsor_name VARCHAR(100) NOT NULL,
+    industry VARCHAR(100),
+    contribution_amount DECIMAL(10,2)
+);
+
+CREATE TABLE event_sponsors (
+    event_id INT,
+    sponsor_id INT,
+    PRIMARY KEY (event_id, sponsor_id),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id),
+
+    FOREIGN KEY (sponsor_id)
+    REFERENCES sponsors(sponsor_id)
+);
+
+-- Sample Data
+INSERT INTO sponsors
+(sponsor_name, industry, contribution_amount)
+VALUES
+('TechCorp', 'Technology', 50000.00),
+('EventHub', 'Marketing', 25000.00);
