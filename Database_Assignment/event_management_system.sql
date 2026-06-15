@@ -2906,3 +2906,20 @@ VALUES
 SELECT *
 FROM coupons
 WHERE is_active = TRUE;
+-- ==============================
+-- EVENT DISCOVERY VIEW
+-- ==============================
+
+CREATE VIEW EventDiscoveryView AS
+SELECT
+    event_id,
+    event_name,
+    category,
+    event_date,
+    status
+FROM events
+WHERE status = 'Upcoming'
+ORDER BY event_date;
+
+-- View Discoverable Events
+SELECT * FROM EventDiscoveryView;
