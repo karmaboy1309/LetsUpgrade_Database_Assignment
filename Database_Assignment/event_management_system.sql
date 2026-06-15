@@ -2883,3 +2883,26 @@ GROUP BY
 
 -- View Capacity Status
 SELECT * FROM EventCapacityDashboard;
+-- ==============================
+-- COUPON & DISCOUNT MANAGEMENT
+-- ==============================
+
+CREATE TABLE coupons (
+    coupon_id INT PRIMARY KEY AUTO_INCREMENT,
+    coupon_code VARCHAR(50) UNIQUE NOT NULL,
+    discount_percentage DECIMAL(5,2) NOT NULL,
+    expiry_date DATE NOT NULL,
+    is_active BOOLEAN DEFAULT TRUE
+);
+
+-- Sample Coupons
+INSERT INTO coupons
+(coupon_code, discount_percentage, expiry_date)
+VALUES
+('WELCOME10', 10.00, '2027-12-31'),
+('FEST20', 20.00, '2027-06-30');
+
+-- View Active Coupons
+SELECT *
+FROM coupons
+WHERE is_active = TRUE;
