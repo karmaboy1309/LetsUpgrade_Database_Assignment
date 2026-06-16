@@ -2950,3 +2950,26 @@ JOIN event_registrations er
 LEFT JOIN event_checkins ec
     ON er.registration_id = ec.registration_id
 GROUP BY e.event_name;
+-- ==============================
+-- EVENT COMPLETION ANALYTICS
+-- ==============================
+
+CREATE VIEW EventCompletionAnalytics AS
+SELECT
+    e.event_name,
+    COUNT(DISTINCT er.registration_id) AS registrations,
+    COUNT(DISTINCT ec.checkin_id) AS attendees_present,
+    ROUND(
+        (COUNT(DISTINCT ec.checkin_id) * 100.0) /
+        NULLIF(COUNT(DISTINCT er.registration_id), 0),
+        2
+    ) AS attendance_percentage
+FROM events e
+LEFT JOIN event_registrations er
+    ON e.event_id = er.event_id
+LEFT JOIN event_checkins ec
+    ON er.registration_id = ec.registration_id
+GROUP BY e.event_id, e.event_name;
+
+-- View Analytics
+SELECT * FROM EventCompletionAnalytics;
