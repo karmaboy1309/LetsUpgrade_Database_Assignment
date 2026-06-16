@@ -2923,3 +2923,30 @@ ORDER BY event_date;
 
 -- View Discoverable Events
 SELECT * FROM EventDiscoveryView;
+-- ==============================
+-- EVENT CHECK-IN SYSTEM
+-- ==============================
+
+CREATE TABLE event_checkins (
+    checkin_id INT PRIMARY KEY AUTO_INCREMENT,
+    registration_id INT NOT NULL,
+    checkin_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (registration_id)
+    REFERENCES event_registrations(registration_id)
+);
+
+-- Sample Check-ins
+INSERT INTO event_checkins (registration_id)
+VALUES (1), (2);
+
+-- Attendance Report
+SELECT
+    e.event_name,
+    COUNT(ec.checkin_id) AS attendees_present
+FROM events e
+JOIN event_registrations er
+    ON e.event_id = er.event_id
+LEFT JOIN event_checkins ec
+    ON er.registration_id = ec.registration_id
+GROUP BY e.event_name;
