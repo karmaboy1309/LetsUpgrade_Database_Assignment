@@ -3012,3 +3012,39 @@ GROUP BY e.event_id, e.event_name;
 
 -- View Certificate Statistics
 SELECT * FROM CertificateAnalyticsView;
+
+-- ==============================
+-- EVENT WISHLIST SYSTEM
+-- ==============================
+
+CREATE TABLE event_wishlist (
+    wishlist_id INT PRIMARY KEY AUTO_INCREMENT,
+    attendee_id INT NOT NULL,
+    event_id INT NOT NULL,
+    added_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (attendee_id)
+    REFERENCES attendees(attendee_id),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id),
+
+    UNIQUE(attendee_id, event_id)
+);
+
+-- Sample Wishlist Data
+INSERT INTO event_wishlist (attendee_id, event_id)
+VALUES
+(1, 3),
+(2, 1);
+
+-- View Wishlist Items
+SELECT
+    a.name,
+    e.event_name,
+    ew.added_at
+FROM event_wishlist ew
+JOIN attendees a
+    ON ew.attendee_id = a.attendee_id
+JOIN events e
+    ON ew.event_id = e.event_id;
