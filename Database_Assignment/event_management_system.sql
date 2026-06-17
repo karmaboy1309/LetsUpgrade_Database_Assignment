@@ -2973,3 +2973,27 @@ GROUP BY e.event_id, e.event_name;
 
 -- View Analytics
 SELECT * FROM EventCompletionAnalytics;
+-- ==============================
+-- CERTIFICATE MANAGEMENT SYSTEM
+-- ==============================
+
+CREATE TABLE certificates (
+    certificate_id INT PRIMARY KEY AUTO_INCREMENT,
+    attendee_id INT NOT NULL,
+    event_id INT NOT NULL,
+    certificate_url VARCHAR(255),
+    issued_date DATE DEFAULT (CURRENT_DATE),
+
+    FOREIGN KEY (attendee_id)
+    REFERENCES attendees(attendee_id),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample Certificates
+INSERT INTO certificates
+(attendee_id, event_id, certificate_url)
+VALUES
+(1, 1, 'https://certificates.example.com/cert1'),
+(2, 2, 'https://certificates.example.com/cert2');
