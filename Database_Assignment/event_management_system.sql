@@ -2997,3 +2997,18 @@ INSERT INTO certificates
 VALUES
 (1, 1, 'https://certificates.example.com/cert1'),
 (2, 2, 'https://certificates.example.com/cert2');
+-- ==============================
+-- CERTIFICATE ANALYTICS DASHBOARD
+-- ==============================
+
+CREATE VIEW CertificateAnalyticsView AS
+SELECT
+    e.event_name,
+    COUNT(c.certificate_id) AS certificates_issued
+FROM events e
+LEFT JOIN certificates c
+    ON e.event_id = c.event_id
+GROUP BY e.event_id, e.event_name;
+
+-- View Certificate Statistics
+SELECT * FROM CertificateAnalyticsView;
