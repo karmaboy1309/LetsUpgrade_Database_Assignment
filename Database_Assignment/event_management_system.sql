@@ -3048,3 +3048,25 @@ JOIN attendees a
     ON ew.attendee_id = a.attendee_id
 JOIN events e
     ON ew.event_id = e.event_id;
+-- ==============================
+-- PREVENT DUPLICATE REGISTRATIONS
+-- ==============================
+
+DELIMITER $$
+
+CREATE TRIGGER PreventDuplicateRegistration
+BEFORE INSERT ON event_registrations
+FOR EACH ROW
+BEGIN
+    IF EXISTS (
+        SELECT 1
+        FROM event_registrations
+        WHERE attendee_id = NEW.attendee_id
+        AND event_id = NEW.event_id
+    ) THEN
+        SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'Attendee is already registered for this event.';
+    END IF;
+END$$
+
+DELIMITER ;
