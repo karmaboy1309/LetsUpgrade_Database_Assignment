@@ -3070,3 +3070,21 @@ BEGIN
 END$$
 
 DELIMITER ;
+-- ==============================
+-- UPCOMING EVENTS DASHBOARD
+-- ==============================
+
+CREATE VIEW UpcomingEventsView AS
+SELECT
+    event_id,
+    event_name,
+    category,
+    event_date,
+    status
+FROM events
+WHERE event_date >= CURDATE()
+AND status = 'Upcoming'
+ORDER BY event_date ASC;
+
+-- View upcoming events
+SELECT * FROM UpcomingEventsView;
