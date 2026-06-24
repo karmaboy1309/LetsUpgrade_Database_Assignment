@@ -3113,3 +3113,18 @@ VALUES
 
 (1, 'Future of Web Development', 'Darshan Makwana',
  '2026-07-15 12:00:00', '2026-07-15 01:30:00');
+-- ==============================
+-- SPEAKER ANALYTICS DASHBOARD
+-- ==============================
+
+CREATE VIEW SpeakerAnalyticsView AS
+SELECT
+    speaker_name,
+    COUNT(session_id) AS total_sessions,
+    COUNT(DISTINCT event_id) AS total_events
+FROM event_sessions
+GROUP BY speaker_name
+ORDER BY total_sessions DESC;
+
+-- View speaker analytics
+SELECT * FROM SpeakerAnalyticsView;
