@@ -3088,3 +3088,28 @@ ORDER BY event_date ASC;
 
 -- View upcoming events
 SELECT * FROM UpcomingEventsView;
+-- ==============================
+-- EVENT SESSION MANAGEMENT
+-- ==============================
+
+CREATE TABLE event_sessions (
+    session_id INT PRIMARY KEY AUTO_INCREMENT,
+    event_id INT NOT NULL,
+    session_title VARCHAR(100) NOT NULL,
+    speaker_name VARCHAR(100),
+    session_start DATETIME,
+    session_end DATETIME,
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample Sessions
+INSERT INTO event_sessions
+(event_id, session_title, speaker_name, session_start, session_end)
+VALUES
+(1, 'Introduction to AI', 'Dr. Raj Patel',
+ '2026-07-15 10:00:00', '2026-07-15 11:30:00'),
+
+(1, 'Future of Web Development', 'Darshan Makwana',
+ '2026-07-15 12:00:00', '2026-07-15 01:30:00');
