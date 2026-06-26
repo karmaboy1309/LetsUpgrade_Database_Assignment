@@ -3152,3 +3152,20 @@ INSERT INTO event_reminders
 VALUES
 (1, 1, '2026-07-14 09:00:00'),
 (2, 2, '2026-08-09 18:00:00');
+-- ==============================
+-- SESSION ATTENDANCE ANALYTICS
+-- ==============================
+
+CREATE VIEW SessionAttendanceView AS
+SELECT
+    es.session_title,
+    es.speaker_name,
+    COUNT(er.registration_id) AS registered_attendees
+FROM event_sessions es
+LEFT JOIN event_registrations er
+    ON es.event_id = er.event_id
+GROUP BY es.session_id, es.session_title, es.speaker_name
+ORDER BY registered_attendees DESC;
+
+-- View session analytics
+SELECT * FROM SessionAttendanceView;
