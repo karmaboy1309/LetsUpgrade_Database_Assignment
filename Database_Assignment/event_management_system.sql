@@ -3128,3 +3128,27 @@ ORDER BY total_sessions DESC;
 
 -- View speaker analytics
 SELECT * FROM SpeakerAnalyticsView;
+-- ==============================
+-- EVENT REMINDER SYSTEM
+-- ==============================
+
+CREATE TABLE event_reminders (
+    reminder_id INT PRIMARY KEY AUTO_INCREMENT,
+    attendee_id INT NOT NULL,
+    event_id INT NOT NULL,
+    reminder_date DATETIME NOT NULL,
+    reminder_status VARCHAR(20) DEFAULT 'Pending',
+
+    FOREIGN KEY (attendee_id)
+    REFERENCES attendees(attendee_id),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample Reminder Data
+INSERT INTO event_reminders
+(attendee_id, event_id, reminder_date)
+VALUES
+(1, 1, '2026-07-14 09:00:00'),
+(2, 2, '2026-08-09 18:00:00');
