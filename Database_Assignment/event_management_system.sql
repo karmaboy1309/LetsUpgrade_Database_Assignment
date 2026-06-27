@@ -3213,3 +3213,19 @@ CREATE TABLE event_volunteers (
     FOREIGN KEY (volunteer_id)
     REFERENCES volunteers(volunteer_id)
 );
+-- ==============================
+-- VENUE UTILIZATION ANALYTICS
+-- ==============================
+
+CREATE VIEW VenueUtilizationView AS
+SELECT
+    v.venue_name,
+    COUNT(e.event_id) AS total_events_hosted
+FROM venues v
+LEFT JOIN events e
+    ON v.venue_id = e.venue_id
+GROUP BY v.venue_id, v.venue_name
+ORDER BY total_events_hosted DESC;
+
+-- View utilization
+SELECT * FROM VenueUtilizationView;
