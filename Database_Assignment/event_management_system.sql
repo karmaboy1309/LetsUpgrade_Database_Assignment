@@ -3280,3 +3280,20 @@ GROUP BY payment_method;
 
 -- View payment analytics
 SELECT * FROM PaymentAnalyticsView;
+-- ==============================
+-- SPEAKER FEEDBACK SYSTEM
+-- ==============================
+
+CREATE TABLE speaker_feedback (
+    feedback_id INT PRIMARY KEY AUTO_INCREMENT,
+    session_id INT NOT NULL,
+    attendee_id INT NOT NULL,
+    rating INT CHECK (rating BETWEEN 1 AND 5),
+    comments TEXT,
+
+    FOREIGN KEY (session_id)
+    REFERENCES event_sessions(session_id),
+
+    FOREIGN KEY (attendee_id)
+    REFERENCES attendees(attendee_id)
+);
