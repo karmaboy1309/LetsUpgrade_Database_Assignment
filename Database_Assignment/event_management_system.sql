@@ -3189,3 +3189,27 @@ VALUES
 (1, 'Projector', 2),
 (1, 'Microphone', 4),
 (2, 'Speaker System', 1);
+-- ==============================
+-- VOLUNTEER MANAGEMENT
+-- ==============================
+
+CREATE TABLE volunteers (
+    volunteer_id INT PRIMARY KEY AUTO_INCREMENT,
+    volunteer_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    phone VARCHAR(15)
+);
+
+CREATE TABLE event_volunteers (
+    event_id INT,
+    volunteer_id INT,
+    assigned_role VARCHAR(50),
+
+    PRIMARY KEY (event_id, volunteer_id),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id),
+
+    FOREIGN KEY (volunteer_id)
+    REFERENCES volunteers(volunteer_id)
+);
