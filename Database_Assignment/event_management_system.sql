@@ -3297,3 +3297,22 @@ CREATE TABLE speaker_feedback (
     FOREIGN KEY (attendee_id)
     REFERENCES attendees(attendee_id)
 );
+-- ==============================
+-- EVENT GROWTH ANALYTICS
+-- ==============================
+
+CREATE VIEW EventGrowthView AS
+SELECT
+    YEAR(event_date) AS event_year,
+    MONTH(event_date) AS event_month,
+    COUNT(*) AS total_events
+FROM events
+GROUP BY
+    YEAR(event_date),
+    MONTH(event_date)
+ORDER BY
+    event_year,
+    event_month;
+
+-- View growth analytics
+SELECT * FROM EventGrowthView;
