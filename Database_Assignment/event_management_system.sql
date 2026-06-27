@@ -3265,3 +3265,18 @@ INSERT INTO payments
 VALUES
 (1, 999.00, 'UPI', 'Completed'),
 (2, 499.00, 'Credit Card', 'Completed');
+-- ==============================
+-- PAYMENT ANALYTICS DASHBOARD
+-- ==============================
+
+CREATE VIEW PaymentAnalyticsView AS
+SELECT
+    payment_method,
+    COUNT(payment_id) AS total_transactions,
+    SUM(amount) AS total_revenue
+FROM payments
+WHERE payment_status = 'Completed'
+GROUP BY payment_method;
+
+-- View payment analytics
+SELECT * FROM PaymentAnalyticsView;
