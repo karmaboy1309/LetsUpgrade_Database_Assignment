@@ -3169,3 +3169,23 @@ ORDER BY registered_attendees DESC;
 
 -- View session analytics
 SELECT * FROM SessionAttendanceView;
+-- ==============================
+-- EVENT RESOURCE MANAGEMENT
+-- ==============================
+
+CREATE TABLE event_resources (
+    resource_id INT PRIMARY KEY AUTO_INCREMENT,
+    event_id INT NOT NULL,
+    resource_name VARCHAR(100) NOT NULL,
+    quantity INT DEFAULT 1,
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample Data
+INSERT INTO event_resources (event_id, resource_name, quantity)
+VALUES
+(1, 'Projector', 2),
+(1, 'Microphone', 4),
+(2, 'Speaker System', 1);
