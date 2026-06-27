@@ -3229,3 +3229,17 @@ ORDER BY total_events_hosted DESC;
 
 -- View utilization
 SELECT * FROM VenueUtilizationView;
+-- ==============================
+-- EVENT CONFLICT DETECTION
+-- ==============================
+
+SELECT
+    e1.event_name AS Event_1,
+    e2.event_name AS Event_2,
+    e1.event_date,
+    e1.venue_id
+FROM events e1
+JOIN events e2
+    ON e1.venue_id = e2.venue_id
+    AND e1.event_id <> e2.event_id
+    AND e1.event_date = e2.event_date;
