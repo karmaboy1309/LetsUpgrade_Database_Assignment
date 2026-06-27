@@ -3243,3 +3243,25 @@ JOIN events e2
     ON e1.venue_id = e2.venue_id
     AND e1.event_id <> e2.event_id
     AND e1.event_date = e2.event_date;
+-- ==============================
+-- PAYMENT MANAGEMENT SYSTEM
+-- ==============================
+
+CREATE TABLE payments (
+    payment_id INT PRIMARY KEY AUTO_INCREMENT,
+    registration_id INT NOT NULL,
+    amount DECIMAL(10,2) NOT NULL,
+    payment_method VARCHAR(50),
+    payment_status VARCHAR(20) DEFAULT 'Pending',
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (registration_id)
+    REFERENCES event_registrations(registration_id)
+);
+
+-- Sample Data
+INSERT INTO payments
+(registration_id, amount, payment_method, payment_status)
+VALUES
+(1, 999.00, 'UPI', 'Completed'),
+(2, 499.00, 'Credit Card', 'Completed');
