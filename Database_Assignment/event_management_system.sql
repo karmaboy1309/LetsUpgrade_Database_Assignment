@@ -3347,3 +3347,26 @@ INSERT INTO staff (staff_name, email, role, phone)
 VALUES
 ('Amit Shah', 'amit@example.com', 'Coordinator', '9876543210'),
 ('Neha Patel', 'neha@example.com', 'Technical Support', '9876501234');
+-- ==============================
+-- EVENT OCCUPANCY ANALYTICS
+-- ==============================
+
+CREATE VIEW EventOccupancyView AS
+SELECT
+    e.event_name,
+    e.max_capacity,
+    COUNT(r.registration_id) AS registered_attendees,
+    ROUND(
+        (COUNT(r.registration_id) * 100.0) / e.max_capacity,
+        2
+    ) AS occupancy_percentage
+FROM events e
+LEFT JOIN event_registrations r
+    ON e.event_id = r.event_id
+GROUP BY
+    e.event_id,
+    e.event_name,
+    e.max_capacity;
+
+-- View occupancy statistics
+SELECT * FROM EventOccupancyView;
