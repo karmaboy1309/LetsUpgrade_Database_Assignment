@@ -3316,3 +3316,34 @@ ORDER BY
 
 -- View growth analytics
 SELECT * FROM EventGrowthView;
+-- ==============================
+-- STAFF MANAGEMENT SYSTEM
+-- ==============================
+
+CREATE TABLE staff (
+    staff_id INT PRIMARY KEY AUTO_INCREMENT,
+    staff_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE,
+    role VARCHAR(50),
+    phone VARCHAR(15)
+);
+
+CREATE TABLE event_staff (
+    event_id INT,
+    staff_id INT,
+    assigned_role VARCHAR(50),
+
+    PRIMARY KEY (event_id, staff_id),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id),
+
+    FOREIGN KEY (staff_id)
+    REFERENCES staff(staff_id)
+);
+
+-- Sample Data
+INSERT INTO staff (staff_name, email, role, phone)
+VALUES
+('Amit Shah', 'amit@example.com', 'Coordinator', '9876543210'),
+('Neha Patel', 'neha@example.com', 'Technical Support', '9876501234');
