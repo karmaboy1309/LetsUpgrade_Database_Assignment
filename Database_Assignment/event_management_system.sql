@@ -3392,3 +3392,23 @@ INSERT INTO event_expenses
 VALUES
 (1,'Venue Rent',25000,'2026-07-01','Main hall booking'),
 (1,'Marketing',8000,'2026-07-03','Social media campaign');
+-- ==============================
+-- EVENT PROFIT ANALYTICS
+-- ==============================
+
+CREATE VIEW EventProfitView AS
+SELECT
+    e.event_name,
+    COALESCE(SUM(p.amount),0) AS revenue,
+    COALESCE(SUM(ex.amount),0) AS expenses,
+    COALESCE(SUM(p.amount),0)-COALESCE(SUM(ex.amount),0) AS estimated_profit
+FROM events e
+LEFT JOIN event_registrations r
+ON e.event_id=r.event_id
+LEFT JOIN payments p
+ON r.registration_id=p.registration_id
+LEFT JOIN event_expenses ex
+ON e.event_id=ex.event_id
+GROUP BY e.event_id,e.event_name;
+
+SELECT * FROM EventProfitView;
