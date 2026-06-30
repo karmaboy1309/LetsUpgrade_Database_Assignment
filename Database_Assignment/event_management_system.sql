@@ -3440,3 +3440,21 @@ VALUES
 ('Workshop'),
 ('Networking'),
 ('Hackathon');
+-- ==============================
+-- EVENT SEARCH VIEW
+-- ==============================
+
+CREATE VIEW EventSearchView AS
+SELECT
+    e.event_id,
+    e.event_name,
+    e.category,
+    t.tag_name,
+    e.event_date
+FROM events e
+LEFT JOIN event_tag_mapping etm
+ON e.event_id=etm.event_id
+LEFT JOIN event_tags t
+ON etm.tag_id=t.tag_id;
+
+SELECT * FROM EventSearchView;
