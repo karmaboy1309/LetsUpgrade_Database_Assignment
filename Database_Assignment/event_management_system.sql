@@ -3412,3 +3412,31 @@ ON e.event_id=ex.event_id
 GROUP BY e.event_id,e.event_name;
 
 SELECT * FROM EventProfitView;
+-- ==============================
+-- EVENT TAG MANAGEMENT
+-- ==============================
+
+CREATE TABLE event_tags (
+    tag_id INT PRIMARY KEY AUTO_INCREMENT,
+    tag_name VARCHAR(50) UNIQUE
+);
+
+CREATE TABLE event_tag_mapping (
+    event_id INT,
+    tag_id INT,
+
+    PRIMARY KEY(event_id,tag_id),
+
+    FOREIGN KEY(event_id)
+    REFERENCES events(event_id),
+
+    FOREIGN KEY(tag_id)
+    REFERENCES event_tags(tag_id)
+);
+
+INSERT INTO event_tags(tag_name)
+VALUES
+('AI'),
+('Workshop'),
+('Networking'),
+('Hackathon');
