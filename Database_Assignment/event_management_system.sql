@@ -3370,3 +3370,25 @@ GROUP BY
 
 -- View occupancy statistics
 SELECT * FROM EventOccupancyView;
+-- ==============================
+-- EVENT EXPENSE MANAGEMENT
+-- ==============================
+
+CREATE TABLE event_expenses (
+    expense_id INT PRIMARY KEY AUTO_INCREMENT,
+    event_id INT NOT NULL,
+    expense_type VARCHAR(100),
+    amount DECIMAL(10,2),
+    expense_date DATE,
+    remarks VARCHAR(255),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample Data
+INSERT INTO event_expenses
+(event_id, expense_type, amount, expense_date, remarks)
+VALUES
+(1,'Venue Rent',25000,'2026-07-01','Main hall booking'),
+(1,'Marketing',8000,'2026-07-03','Social media campaign');
