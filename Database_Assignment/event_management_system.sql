@@ -3458,3 +3458,26 @@ LEFT JOIN event_tags t
 ON etm.tag_id=t.tag_id;
 
 SELECT * FROM EventSearchView;
+-- ==============================
+-- EVENT FEEDBACK SENTIMENT
+-- ==============================
+
+CREATE VIEW EventFeedbackSentimentView AS
+SELECT
+    e.event_id,
+    e.event_name,
+    COUNT(f.feedback_id) AS total_feedback,
+    ROUND(AVG(f.rating),2) AS average_rating,
+    CASE
+        WHEN AVG(f.rating) >= 4.5 THEN 'Excellent'
+        WHEN AVG(f.rating) >= 3.5 THEN 'Good'
+        WHEN AVG(f.rating) >= 2.5 THEN 'Average'
+        ELSE 'Needs Improvement'
+    END AS sentiment
+FROM events e
+LEFT JOIN feedback f
+ON e.event_id = f.event_id
+GROUP BY e.event_id, e.event_name;
+
+-- View Sentiment Report
+SELECT * FROM EventFeedbackSentimentView;
