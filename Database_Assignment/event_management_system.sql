@@ -3481,3 +3481,17 @@ GROUP BY e.event_id, e.event_name;
 
 -- View Sentiment Report
 SELECT * FROM EventFeedbackSentimentView;
+-- ==============================
+-- REGISTRATION TIMELINE REPORT
+-- ==============================
+
+CREATE VIEW RegistrationTimelineView AS
+SELECT
+    DATE(registration_date) AS registration_day,
+    COUNT(registration_id) AS total_registrations
+FROM event_registrations
+GROUP BY DATE(registration_date)
+ORDER BY registration_day;
+
+-- View Registration Timeline
+SELECT * FROM RegistrationTimelineView;
