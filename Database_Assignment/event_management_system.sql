@@ -3516,3 +3516,27 @@ INSERT INTO cancellation_policies
 VALUES
 (1, 48, 100.00, 'Full refund if cancelled 48 hours before the event'),
 (2, 24, 50.00, '50% refund if cancelled 24 hours before the event');
+-- ==============================
+-- ORGANIZER PERFORMANCE RANKING
+-- ==============================
+
+CREATE VIEW OrganizerRankingView AS
+SELECT
+    o.organizer_id,
+    o.organizer_name,
+    COUNT(DISTINCT e.event_id) AS total_events,
+    COUNT(r.registration_id) AS total_registrations,
+    DENSE_RANK() OVER (
+        ORDER BY COUNT(r.registration_id) DESC
+    ) AS organizer_rank
+FROM organizers o
+LEFT JOIN events e
+    ON o.organizer_id = e.organizer_id
+LEFT JOIN event_registrations r
+    ON e.event_id = r.event_id
+GROUP BY
+    o.organizer_id,
+    o.organizer_name;
+
+-- View Organizer Ranking
+SELECT * FROM OrganizerRankingView;
