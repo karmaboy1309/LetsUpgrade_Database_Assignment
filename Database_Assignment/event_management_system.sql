@@ -3495,3 +3495,24 @@ ORDER BY registration_day;
 
 -- View Registration Timeline
 SELECT * FROM RegistrationTimelineView;
+-- ==============================
+-- EVENT CANCELLATION POLICY
+-- ==============================
+
+CREATE TABLE cancellation_policies (
+    policy_id INT PRIMARY KEY AUTO_INCREMENT,
+    event_id INT NOT NULL,
+    cancellation_deadline INT NOT NULL COMMENT 'Hours before event',
+    refund_percentage DECIMAL(5,2) NOT NULL,
+    policy_description VARCHAR(255),
+
+    FOREIGN KEY (event_id)
+    REFERENCES events(event_id)
+);
+
+-- Sample Policies
+INSERT INTO cancellation_policies
+(event_id, cancellation_deadline, refund_percentage, policy_description)
+VALUES
+(1, 48, 100.00, 'Full refund if cancelled 48 hours before the event'),
+(2, 24, 50.00, '50% refund if cancelled 24 hours before the event');
